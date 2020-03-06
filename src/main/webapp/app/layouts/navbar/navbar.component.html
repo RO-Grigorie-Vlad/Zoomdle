@@ -27,6 +27,42 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
+                    <li>
+                        <a class="dropdown-item" routerLink="student-info" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.studentInfo">Student Info</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="profesor-info" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.profesorInfo">Profesor Info</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="licenta" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.licenta">Licenta</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="aplicare-licenta" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.aplicareLicenta">Aplicare Licenta</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="aplicare-consultatie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.aplicareConsultatie">Aplicare Consultatie</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="consultatie" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.consultatie">Consultatie</span>
+                        </a>
+                    </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>

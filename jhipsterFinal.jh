@@ -1,0 +1,57 @@
+
+entity StudentInfo {
+}
+
+entity ProfesorInfo {
+}
+
+entity Licenta {
+	denumire String required
+    descriere String
+    atribuita Boolean
+}
+
+
+entity AplicareLicenta{
+    rezolvata Boolean
+    acceptata Boolean
+}
+
+entity AplicareConsultatie{
+    rezolvata Boolean
+    acceptata Boolean
+}
+
+entity Consultatie{
+	data ZonedDateTime required
+    rezolvata Boolean
+    acceptata Boolean
+}
+
+relationship OneToOne {
+
+    Licenta{studentInfo} to StudentInfo{licenta}
+    
+    StudentInfo{user(login) required} to User
+    ProfesorInfo{user(login) required} to User
+}
+
+relationship OneToMany {
+	ProfesorInfo{studentCoordonat} to StudentInfo{profesor}
+    ProfesorInfo{licente(denumire)} to Licenta{profesor}
+
+    StudentInfo{aplicareLic} to AplicareLicenta{student}
+  	Licenta{aplicareLicenta} to AplicareLicenta{licenta(denumire)}
+    
+    StudentInfo{consult} to Consultatie{student}
+	StudentInfo{aplicareConsult} to AplicareConsultatie{student}
+    Consultatie{aplicareConsultatie} to AplicareConsultatie{consultatie}
+    
+    ProfesorInfo{consultatie} to Consultatie{profesor} 
+
+}
+
+paginate * with pagination
+service * with serviceClass
+
+

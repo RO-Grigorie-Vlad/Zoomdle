@@ -1,0 +1,27 @@
+{
+  "licentaApp": {
+    "consultatie": {
+      "home": {
+        "title": "Consultaties",
+        "createLabel": "Creeare o nouă entitate Consultatie",
+        "createOrEditLabel": "Creeare sau editare Consultatie",
+        "notFound": "No Consultaties found"
+      },
+      "created": "A fost creată o nouă entitate Consultatie cu identificatorul {{ param }}",
+      "updated": "Consultatie cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Consultatie cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Consultatie {{ id }}?"
+      },
+      "detail": {
+        "title": "Consultatie"
+      },
+      "data": "Data",
+      "rezolvata": "Rezolvata",
+      "acceptata": "Acceptata",
+      "aplicareConsultatie": "Aplicare Consultatie",
+      "student": "Student",
+      "profesor": "Profesor"
+    }
+  }
+}

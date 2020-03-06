@@ -1,0 +1,57 @@
+{
+    "name": "StudentInfo",
+    "fields": [],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "studentInfo",
+            "relationshipValidateRules": "required",
+            "relationshipName": "user",
+            "otherEntityField": "login",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "aplicareLicenta",
+            "otherEntityRelationshipName": "student",
+            "relationshipName": "aplicareLic"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "consultatie",
+            "otherEntityRelationshipName": "student",
+            "relationshipName": "consult"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "aplicareConsultatie",
+            "otherEntityRelationshipName": "student",
+            "relationshipName": "aplicareConsult"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "licenta",
+            "otherEntityRelationshipName": "studentInfo",
+            "relationshipName": "licenta",
+            "ownerSide": false
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "profesorInfo",
+            "otherEntityRelationshipName": "studentCoordonat",
+            "relationshipName": "profesor",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200306102900",
+    "entityTableName": "student_info",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

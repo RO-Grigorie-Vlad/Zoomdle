@@ -1,0 +1,43 @@
+{
+    "name": "ProfesorInfo",
+    "fields": [],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "profesorInfo",
+            "relationshipValidateRules": "required",
+            "relationshipName": "user",
+            "otherEntityField": "login",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "studentInfo",
+            "otherEntityRelationshipName": "profesor",
+            "relationshipName": "studentCoordonat"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "licenta",
+            "otherEntityRelationshipName": "profesor",
+            "relationshipName": "licente"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "consultatie",
+            "otherEntityRelationshipName": "profesor",
+            "relationshipName": "consultatie"
+        }
+    ],
+    "changelogDate": "20200306103000",
+    "entityTableName": "profesor_info",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

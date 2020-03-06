@@ -42,6 +42,20 @@ public class CacheConfiguration {
             createCache(cm, base.domain.User.class.getName());
             createCache(cm, base.domain.Authority.class.getName());
             createCache(cm, base.domain.User.class.getName() + ".authorities");
+            createCache(cm, base.domain.StudentInfo.class.getName());
+            createCache(cm, base.domain.StudentInfo.class.getName() + ".aplicareLics");
+            createCache(cm, base.domain.StudentInfo.class.getName() + ".consults");
+            createCache(cm, base.domain.StudentInfo.class.getName() + ".aplicareConsults");
+            createCache(cm, base.domain.ProfesorInfo.class.getName());
+            createCache(cm, base.domain.ProfesorInfo.class.getName() + ".studentCoordonats");
+            createCache(cm, base.domain.ProfesorInfo.class.getName() + ".licentes");
+            createCache(cm, base.domain.ProfesorInfo.class.getName() + ".consultaties");
+            createCache(cm, base.domain.Licenta.class.getName());
+            createCache(cm, base.domain.Licenta.class.getName() + ".aplicareLicentas");
+            createCache(cm, base.domain.AplicareLicenta.class.getName());
+            createCache(cm, base.domain.AplicareConsultatie.class.getName());
+            createCache(cm, base.domain.Consultatie.class.getName());
+            createCache(cm, base.domain.Consultatie.class.getName() + ".aplicareConsultaties");
             // jhipster-needle-ehcache-add-entry
         };
     }

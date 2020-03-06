@@ -1,0 +1,52 @@
+{
+    "name": "Consultatie",
+    "fields": [
+        {
+            "fieldName": "data",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "rezolvata",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "acceptata",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "aplicareConsultatie",
+            "otherEntityRelationshipName": "consultatie",
+            "relationshipName": "aplicareConsultatie"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "studentInfo",
+            "otherEntityRelationshipName": "consult",
+            "relationshipName": "student",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "profesorInfo",
+            "otherEntityRelationshipName": "consultatie",
+            "relationshipName": "profesor",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200306103400",
+    "entityTableName": "consultatie",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

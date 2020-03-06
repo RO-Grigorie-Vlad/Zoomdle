@@ -1,0 +1,39 @@
+{
+    "name": "AplicareConsultatie",
+    "fields": [
+        {
+            "fieldName": "rezolvata",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "acceptata",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "studentInfo",
+            "otherEntityRelationshipName": "aplicareConsult",
+            "relationshipName": "student",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "consultatie",
+            "otherEntityRelationshipName": "aplicareConsultatie",
+            "relationshipName": "consultatie",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200306103300",
+    "entityTableName": "aplicare_consultatie",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

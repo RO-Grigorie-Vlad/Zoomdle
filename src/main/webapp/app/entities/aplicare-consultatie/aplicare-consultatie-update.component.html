@@ -1,0 +1,54 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-aplicare-consultatie-heading" jhiTranslate="licentaApp.aplicareConsultatie.home.createOrEditLabel">Create or edit a Aplicare Consultatie</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="licentaApp.aplicareConsultatie.rezolvata" for="field_rezolvata">Rezolvata</label>
+                    <input type="checkbox" class="form-control" name="rezolvata" id="field_rezolvata"
+                           formControlName="rezolvata"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="licentaApp.aplicareConsultatie.acceptata" for="field_acceptata">Acceptata</label>
+                    <input type="checkbox" class="form-control" name="acceptata" id="field_acceptata"
+                           formControlName="acceptata"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="licentaApp.aplicareConsultatie.student" for="field_student">Student</label>
+                    <select class="form-control" id="field_student" name="student" formControlName="student">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="studentInfoOption.id === editForm.get('student')!.value?.id ? editForm.get('student')!.value : studentInfoOption" *ngFor="let studentInfoOption of studentinfos; trackBy: trackById">{{ studentInfoOption.id }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="licentaApp.aplicareConsultatie.consultatie" for="field_consultatie">Consultatie</label>
+                    <select class="form-control" id="field_consultatie" name="consultatie" formControlName="consultatie">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="consultatieOption.id === editForm.get('consultatie')!.value?.id ? editForm.get('consultatie')!.value : consultatieOption" *ngFor="let consultatieOption of consultaties; trackBy: trackById">{{ consultatieOption.id }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

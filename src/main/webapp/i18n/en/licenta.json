@@ -1,0 +1,27 @@
+{
+  "licentaApp": {
+    "licenta": {
+      "home": {
+        "title": "Licentas",
+        "createLabel": "Create a new Licenta",
+        "createOrEditLabel": "Create or edit a Licenta",
+        "notFound": "No Licentas found"
+      },
+      "created": "A new Licenta is created with identifier {{ param }}",
+      "updated": "A Licenta is updated with identifier {{ param }}",
+      "deleted": "A Licenta is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Licenta {{ id }}?"
+      },
+      "detail": {
+        "title": "Licenta"
+      },
+      "denumire": "Denumire",
+      "descriere": "Descriere",
+      "atribuita": "Atribuita",
+      "studentInfo": "Student Info",
+      "aplicareLicenta": "Aplicare Licenta",
+      "profesor": "Profesor"
+    }
+  }
+}

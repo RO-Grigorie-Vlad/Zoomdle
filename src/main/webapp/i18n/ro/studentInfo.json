@@ -1,0 +1,27 @@
+{
+  "licentaApp": {
+    "studentInfo": {
+      "home": {
+        "title": "Student Infos",
+        "createLabel": "Creeare o nouă entitate Student Info",
+        "createOrEditLabel": "Creeare sau editare Student Info",
+        "notFound": "No Student Infos found"
+      },
+      "created": "A fost creată o nouă entitate Student Info cu identificatorul {{ param }}",
+      "updated": "Student Info cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Student Info cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Student Info {{ id }}?"
+      },
+      "detail": {
+        "title": "Student Info"
+      },
+      "user": "User",
+      "aplicareLic": "Aplicare Lic",
+      "consult": "Consult",
+      "aplicareConsult": "Aplicare Consult",
+      "licenta": "Licenta",
+      "profesor": "Profesor"
+    }
+  }
+}

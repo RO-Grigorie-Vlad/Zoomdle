@@ -1,0 +1,25 @@
+{
+  "licentaApp": {
+    "aplicareConsultatie": {
+      "home": {
+        "title": "Aplicare Consultaties",
+        "createLabel": "Create a new Aplicare Consultatie",
+        "createOrEditLabel": "Create or edit a Aplicare Consultatie",
+        "notFound": "No Aplicare Consultaties found"
+      },
+      "created": "A new Aplicare Consultatie is created with identifier {{ param }}",
+      "updated": "A Aplicare Consultatie is updated with identifier {{ param }}",
+      "deleted": "A Aplicare Consultatie is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Aplicare Consultatie {{ id }}?"
+      },
+      "detail": {
+        "title": "Aplicare Consultatie"
+      },
+      "rezolvata": "Rezolvata",
+      "acceptata": "Acceptata",
+      "student": "Student",
+      "consultatie": "Consultatie"
+    }
+  }
+}

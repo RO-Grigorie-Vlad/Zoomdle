@@ -14,6 +14,18 @@
     <property name="uuidType" value="uuid" dbms="h2, postgresql"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200306102900_added_entity_StudentInfo.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200306103000_added_entity_ProfesorInfo.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200306103100_added_entity_Licenta.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200306103200_added_entity_AplicareLicenta.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200306103300_added_entity_AplicareConsultatie.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200306103400_added_entity_Consultatie.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20200306102900_added_entity_constraints_StudentInfo.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200306103000_added_entity_constraints_ProfesorInfo.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200306103100_added_entity_constraints_Licenta.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200306103200_added_entity_constraints_AplicareLicenta.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200306103300_added_entity_constraints_AplicareConsultatie.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200306103400_added_entity_constraints_Consultatie.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

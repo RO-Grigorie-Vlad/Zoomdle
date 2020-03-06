@@ -1,0 +1,39 @@
+{
+    "name": "AplicareLicenta",
+    "fields": [
+        {
+            "fieldName": "rezolvata",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "acceptata",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "studentInfo",
+            "otherEntityRelationshipName": "aplicareLic",
+            "relationshipName": "student",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "licenta",
+            "otherEntityRelationshipName": "aplicareLicenta",
+            "relationshipName": "licenta",
+            "otherEntityField": "denumire"
+        }
+    ],
+    "changelogDate": "20200306103200",
+    "entityTableName": "aplicare_licenta",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

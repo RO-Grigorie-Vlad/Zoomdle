@@ -1,0 +1,25 @@
+{
+  "licentaApp": {
+    "profesorInfo": {
+      "home": {
+        "title": "Profesor Infos",
+        "createLabel": "Creeare o nouă entitate Profesor Info",
+        "createOrEditLabel": "Creeare sau editare Profesor Info",
+        "notFound": "No Profesor Infos found"
+      },
+      "created": "A fost creată o nouă entitate Profesor Info cu identificatorul {{ param }}",
+      "updated": "Profesor Info cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Profesor Info cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Profesor Info {{ id }}?"
+      },
+      "detail": {
+        "title": "Profesor Info"
+      },
+      "user": "User",
+      "studentCoordonat": "Student Coordonat",
+      "licente": "Licente",
+      "consultatie": "Consultatie"
+    }
+  }
+}

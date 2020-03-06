@@ -1,0 +1,66 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-licenta-heading" jhiTranslate="licentaApp.licenta.home.createOrEditLabel">Create or edit a Licenta</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="licentaApp.licenta.denumire" for="field_denumire">Denumire</label>
+                    <input type="text" class="form-control" name="denumire" id="field_denumire"
+                           formControlName="denumire"/>
+                    <div *ngIf="editForm.get('denumire')!.invalid && (editForm.get('denumire')!.dirty || editForm.get('denumire')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('denumire')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="licentaApp.licenta.descriere" for="field_descriere">Descriere</label>
+                    <input type="text" class="form-control" name="descriere" id="field_descriere"
+                           formControlName="descriere"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="licentaApp.licenta.atribuita" for="field_atribuita">Atribuita</label>
+                    <input type="checkbox" class="form-control" name="atribuita" id="field_atribuita"
+                           formControlName="atribuita"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="licentaApp.licenta.studentInfo" for="field_studentInfo">Student Info</label>
+                    <select class="form-control" id="field_studentInfo" name="studentInfo" formControlName="studentInfo">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="studentInfoOption.id === editForm.get('studentInfo')!.value?.id ? editForm.get('studentInfo')!.value : studentInfoOption" *ngFor="let studentInfoOption of studentinfos; trackBy: trackById">{{ studentInfoOption.id }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="licentaApp.licenta.profesor" for="field_profesor">Profesor</label>
+                    <select class="form-control" id="field_profesor" name="profesor" formControlName="profesor">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="profesorInfoOption.id === editForm.get('profesor')!.value?.id ? editForm.get('profesor')!.value : profesorInfoOption" *ngFor="let profesorInfoOption of profesorinfos; trackBy: trackById">{{ profesorInfoOption.id }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

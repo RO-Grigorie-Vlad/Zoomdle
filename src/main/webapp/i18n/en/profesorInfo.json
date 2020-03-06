@@ -1,0 +1,25 @@
+{
+  "licentaApp": {
+    "profesorInfo": {
+      "home": {
+        "title": "Profesor Infos",
+        "createLabel": "Create a new Profesor Info",
+        "createOrEditLabel": "Create or edit a Profesor Info",
+        "notFound": "No Profesor Infos found"
+      },
+      "created": "A new Profesor Info is created with identifier {{ param }}",
+      "updated": "A Profesor Info is updated with identifier {{ param }}",
+      "deleted": "A Profesor Info is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Profesor Info {{ id }}?"
+      },
+      "detail": {
+        "title": "Profesor Info"
+      },
+      "user": "User",
+      "studentCoordonat": "Student Coordonat",
+      "licente": "Licente",
+      "consultatie": "Consultatie"
+    }
+  }
+}

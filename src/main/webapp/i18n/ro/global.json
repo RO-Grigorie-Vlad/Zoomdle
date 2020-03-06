@@ -10,6 +10,12 @@
         "bankAccount": "ContBancar",
         "label": "Etichetă",
         "operation": "Operație",
+        "studentInfo": "Student Info",
+        "profesorInfo": "Profesor Info",
+        "licenta": "Licenta",
+        "aplicareLicenta": "Aplicare Licenta",
+        "aplicareConsultatie": "Aplicare Consultatie",
+        "consultatie": "Consultatie",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

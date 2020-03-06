@@ -1,0 +1,53 @@
+{
+    "name": "Licenta",
+    "fields": [
+        {
+            "fieldName": "denumire",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "descriere",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "atribuita",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "studentInfo",
+            "otherEntityRelationshipName": "licenta",
+            "relationshipName": "studentInfo",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "aplicareLicenta",
+            "otherEntityRelationshipName": "licenta",
+            "relationshipName": "aplicareLicenta"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "profesorInfo",
+            "otherEntityRelationshipName": "licente",
+            "relationshipName": "profesor",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200306103100",
+    "entityTableName": "licenta",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}
