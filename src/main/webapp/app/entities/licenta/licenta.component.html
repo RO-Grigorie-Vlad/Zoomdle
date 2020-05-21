@@ -35,7 +35,9 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-                    <th scope="col" *jhiHasAnyAuthority="['ROLE_ADMIN']" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th> 
+                    <th scope="col" *jhiHasAnyAuthority="['ROLE_ADMIN']" jhiSortBy="id">
+                        <span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon>
+                    </th> 
                     <th scope="col"  jhiSortBy="denumire"><span jhiTranslate="licentaApp.licenta.denumire">Denumire</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="descriere"><span jhiTranslate="licentaApp.licenta.descriere">Descriere</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="atribuita"><span jhiTranslate="licentaApp.licenta.atribuita">Atribuita</span> <fa-icon icon="sort"></fa-icon></th>
