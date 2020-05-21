@@ -134,8 +134,8 @@ jhipster:
     from: Licenta@localhost
   swagger:
     default-include-pattern: /api/.*
-    title: Licenta API
-    description: Licenta API documentation
+    title: Management lucrari de diploma API
+    description: Management lucrari de diploma  documentation
     version: 0.0.1
     terms-of-service-url:
     contact-name:

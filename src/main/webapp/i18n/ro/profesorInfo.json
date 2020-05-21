@@ -14,7 +14,7 @@
         "question": "Sunteți sigur că doriți să ștergeți Profesor Info {{ id }}?"
       },
       "detail": {
-        "title": "Profesor Info"
+        "title": "Profesor"
       },
       "user": "User",
       "studentCoordonat": "Student Coordonat",

@@ -1,6 +1,10 @@
 package base.service;
 
+import base.domain.Licenta;
+import base.domain.ProfesorInfo;
 import base.domain.StudentInfo;
+import base.domain.User;
+import base.repository.ProfesorInfoRepository;
 import base.repository.StudentInfoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +29,20 @@ public class StudentInfoService {
     private final Logger log = LoggerFactory.getLogger(StudentInfoService.class);
 
     private final StudentInfoRepository studentInfoRepository;
+    private final ProfesorInfoRepository profesorInfoRepository;
 
-    public StudentInfoService(StudentInfoRepository studentInfoRepository) {
+    public StudentInfoService(StudentInfoRepository studentInfoRepository, ProfesorInfoRepository profesorInfoRepository) {
+        this.profesorInfoRepository = profesorInfoRepository;
         this.studentInfoRepository = studentInfoRepository;
+    }
+
+
+    public Optional<StudentInfo> findOneByUser(User user){
+        return this.studentInfoRepository.findOneByUser(user);
+    }
+
+    public Optional<StudentInfo> findOneByLicenta(Licenta licenta){
+        return this.studentInfoRepository.findOneByLicenta(licenta);
     }
 
     /**
@@ -65,6 +80,29 @@ public class StudentInfoService {
             .stream(studentInfoRepository.findAll().spliterator(), false)
             .filter(studentInfo -> studentInfo.getLicenta() == null)
             .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<StudentInfo> findAllStudentsOfAProfessor( Pageable pageable, Long id) {
+        log.debug("NEW Request to get all StudentInfos of Professor with id= " + id);
+        
+        //return studentInfoRepository.findAllByProfesor(id,pageable);
+
+        return studentInfoRepository.findAllByProfesorID(id,pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<StudentInfo> findAllStudentsOfAProfessor2( Pageable pageable, Long id) {
+        log.debug("NEW Request2 to get all StudentInfos of Professor with id= " + id);
+
+        Optional<ProfesorInfo> profesor = profesorInfoRepository.findById(id);
+        if(profesor.isPresent()){
+            return studentInfoRepository.findAllByProfesor(profesor.get(),pageable);
+        }
+        return null;
+        
+
+        //return studentInfoRepository.findAllByProfesorID(id,pageable);
     }
 
     /**

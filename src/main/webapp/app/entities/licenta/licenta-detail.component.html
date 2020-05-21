@@ -1,8 +1,8 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="licenta">
-            <h2><span jhiTranslate="licentaApp.licenta.detail.title">Licenta</span> {{ licenta.id }}</h2>
-
+            <h2><span ></span> {{ licenta?.denumire }}</h2>
+            <!--jhiTranslate="licentaApp.licenta.detail.title"-->
             <hr>
 
             <jhi-alert-error></jhi-alert-error>
@@ -10,26 +10,34 @@
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="licentaApp.licenta.denumire">Denumire</span></dt>
                 <dd>
-                    <span>{{ licenta.denumire }}</span>
+                    <span>{{ licenta?.denumire }}</span>
                 </dd>
                 <dt><span jhiTranslate="licentaApp.licenta.descriere">Descriere</span></dt>
                 <dd>
-                    <span>{{ licenta.descriere }}</span>
+                    <span>{{ licenta?.descriere }}</span>
                 </dd>
                 <dt><span jhiTranslate="licentaApp.licenta.atribuita">Atribuita</span></dt>
                 <dd>
-                    <span>{{ licenta.atribuita }}</span>
+                    <!--<span>{{ licenta.atribuita }}</span>-->
+                    <span *ngIf="licenta?.atribuita">Da</span>
+                    <span *ngIf="!licenta?.atribuita">Nu</span>
                 </dd>
                 <dt><span jhiTranslate="licentaApp.licenta.studentInfo">Student Info</span></dt>
                 <dd>
-                    <div *ngIf="licenta.studentInfo">
-                        <a [routerLink]="['/student-info', licenta.studentInfo?.id, 'view']">{{ licenta.studentInfo?.id }}</a>
+                    <div *ngIf="licenta?.studentInfo">
+                        <a [routerLink]="['/student-info', licenta?.studentInfo?.id, 'view']">{{ licenta?.studentInfo?.user?.lastName }} {{ licenta?.studentInfo?.user?.firstName }}</a>
+                    </div>
+                    <div *ngIf="licenta?.studentInfo === null">
+                        <p>Fara student</p>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="licentaApp.licenta.profesor">Profesor</span></dt>
                 <dd>
-                    <div *ngIf="licenta.profesor">
-                        <a [routerLink]="['/profesor-info', licenta.profesor?.id, 'view']">{{ licenta.profesor?.id }}</a>
+                    <div *ngIf="licenta?.profesor">
+                        <a [routerLink]="['/profesor-info', licenta?.profesor?.id, 'view']">{{ licenta?.profesor?.user?.lastName }} {{ licenta?.profesor?.user?.firstName }}</a>
+                    </div>
+                    <div *ngIf="licenta?.profesor === null">
+                        <p>Fara profesor</p>
                     </div>
                 </dd>
             </dl>
@@ -39,12 +47,21 @@
                     class="btn btn-info">
                 <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
+            
+            <button type="button" *ngIf="licenta.profesor?.id === curentProfesorID"
+                        [routerLink]="['/licenta', licenta.id, 'edit']"
+                        class="btn btn-primary">
+                    <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
 
-            <button type="button"
+
+            <button type="button" *jhiHasAnyAuthority="['ROLE_ADMIN']"
                     [routerLink]="['/licenta', licenta.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
+            
+            
         </div>
     </div>
 </div>

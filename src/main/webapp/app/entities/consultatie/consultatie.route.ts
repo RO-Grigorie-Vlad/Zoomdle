@@ -42,7 +42,7 @@ export const consultatieRoute: Routes = [
       pagingParams: JhiResolvePagingParams
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_STUDENT', 'ROLE_ADMIN', 'ROLE_PROFESOR'],
       defaultSort: 'id,asc',
       pageTitle: 'licentaApp.consultatie.home.title'
     },
@@ -55,7 +55,7 @@ export const consultatieRoute: Routes = [
       consultatie: ConsultatieResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_STUDENT', 'ROLE_ADMIN', 'ROLE_PROFESOR'],
       pageTitle: 'licentaApp.consultatie.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -67,7 +67,7 @@ export const consultatieRoute: Routes = [
       consultatie: ConsultatieResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN', 'ROLE_PROFESOR'],
       pageTitle: 'licentaApp.consultatie.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -79,7 +79,7 @@ export const consultatieRoute: Routes = [
       consultatie: ConsultatieResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN', 'ROLE_PROFESOR'],
       pageTitle: 'licentaApp.consultatie.home.title'
     },
     canActivate: [UserRouteAccessService]

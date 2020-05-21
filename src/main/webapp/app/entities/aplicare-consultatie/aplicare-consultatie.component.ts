@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IAplicareConsultatie } from 'app/shared/model/aplicare-consultatie.model';
@@ -30,7 +30,8 @@ export class AplicareConsultatieComponent implements OnInit, OnDestroy {
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected alertService: JhiAlertService
   ) {}
 
   loadPage(page?: number): void {
@@ -62,6 +63,37 @@ export class AplicareConsultatieComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.eventSubscriber) {
       this.eventManager.destroy(this.eventSubscriber);
+    }
+  }
+
+  raspundeLaAplicatie(aplicareConsultatieID: number, raspuns: boolean): void {
+    this.aplicareConsultatieService.raspunde(aplicareConsultatieID, raspuns).subscribe(() => this.loadPage());
+    if (raspuns === true) {
+      this.alertService.get().push(
+        this.alertService.addAlert(
+          {
+            type: 'success',
+            msg: 'licentaApp.aplicareConsultatie.accepta',
+            timeout: 3000,
+            toast: false,
+            scoped: true
+          },
+          this.alertService.get()
+        )
+      );
+    } else {
+      this.alertService.get().push(
+        this.alertService.addAlert(
+          {
+            type: 'danger',
+            msg: 'licentaApp.aplicareConsultatie.respinge',
+            timeout: 3000,
+            toast: false,
+            scoped: true
+          },
+          this.alertService.get()
+        )
+      );
     }
   }
 

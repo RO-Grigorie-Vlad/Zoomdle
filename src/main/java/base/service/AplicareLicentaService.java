@@ -1,6 +1,8 @@
 package base.service;
 
 import base.domain.AplicareLicenta;
+import base.domain.Licenta;
+import base.domain.StudentInfo;
 import base.repository.AplicareLicentaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -26,6 +30,20 @@ public class AplicareLicentaService {
     public AplicareLicentaService(AplicareLicentaRepository aplicareLicentaRepository) {
         this.aplicareLicentaRepository = aplicareLicentaRepository;
     }
+    
+    public List<AplicareLicenta> findAllByLicenta(Licenta licenta){
+        return this.aplicareLicentaRepository.findAllByLicenta(licenta);
+    }
+
+    public Page<AplicareLicenta> findAllbyProfesor(Long id, Pageable pageable){
+        return this.aplicareLicentaRepository.findAllbyProfesor(id, pageable);
+    }
+
+    public Page<AplicareLicenta> findAllByStudent(Pageable pageable , StudentInfo student){
+        return this.aplicareLicentaRepository.findAllByStudent(student, pageable);
+    }
+
+    
 
     /**
      * Save a aplicareLicenta.
@@ -48,6 +66,14 @@ public class AplicareLicentaService {
     public Page<AplicareLicenta> findAll(Pageable pageable) {
         log.debug("Request to get all AplicareLicentas");
         return aplicareLicentaRepository.findAll(pageable);
+    }
+
+    public List<AplicareLicenta> findAllByStudent2(Long id){
+        return aplicareLicentaRepository.findAllByStudent2(id);
+    }
+
+    public List<Long> findAllIDByStudent(Long id){
+        return aplicareLicentaRepository.findAllIDByStudent(id);
     }
 
     /**

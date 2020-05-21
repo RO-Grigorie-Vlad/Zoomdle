@@ -3,21 +3,22 @@
     "consultatie": {
       "home": {
         "title": "Consultaties",
-        "createLabel": "Creeare o nouă entitate Consultatie",
+        "createLabel": "Creeare o nouă Consultatie",
         "createOrEditLabel": "Creeare sau editare Consultatie",
-        "notFound": "No Consultaties found"
+        "notFound": "Nu s-a gasit nici o Consultatie"
       },
-      "created": "A fost creată o nouă entitate Consultatie cu identificatorul {{ param }}",
-      "updated": "Consultatie cu identificatorul {{ param }} a fost actualizată",
-      "deleted": "Consultatie cu identificatorul {{ param }} a fost ștearsă",
+      "created": "A fost creată o nouă Consultatie",
+      "updated": "Consultatia a fost actializată",
+      "deleted": "Consultatia a fost ștearsă",
       "delete": {
-        "question": "Sunteți sigur că doriți să ștergeți Consultatie {{ id }}?"
+        "question": "Sunteți sigur că doriți să ștergeți aceasta Consultatie?"
       },
       "detail": {
         "title": "Consultatie"
       },
+      "aplica": "Succes : aplicare la consultatie efectuata",
       "data": "Data",
-      "rezolvata": "Rezolvata",
+      "rezolvata": "Expirata",
       "acceptata": "Acceptata",
       "aplicareConsultatie": "Aplicare Consultatie",
       "student": "Student",

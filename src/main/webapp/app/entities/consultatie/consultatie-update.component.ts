@@ -75,6 +75,9 @@ export class ConsultatieUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const consultatie = this.createFromForm();
+    if (consultatie.student !== null) {
+      consultatie.acceptata = true;
+    }
     if (consultatie.id !== undefined) {
       this.subscribeToSaveResponse(this.consultatieService.update(consultatie));
     } else {

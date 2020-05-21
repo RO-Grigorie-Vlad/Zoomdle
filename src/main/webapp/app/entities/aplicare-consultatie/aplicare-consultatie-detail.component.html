@@ -1,31 +1,32 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="aplicareConsultatie">
-            <h2><span jhiTranslate="licentaApp.aplicareConsultatie.detail.title">Aplicare Consultatie</span> {{ aplicareConsultatie.id }}</h2>
-
+            <h2><span >Aplicare la</span> Consultatia profesorului {{ aplicareConsultatie?.consultatie?.profesor?.user?.lastName }} {{ aplicareConsultatie?.consultatie?.profesor?.user?.firstName }} la {{ aplicareConsultatie?.consultatie?.data | date:'medium'}}</h2>
+            <!--jhiTranslate="licentaApp.aplicareConsultatie.detail.title"-->
             <hr>
 
             <jhi-alert-error></jhi-alert-error>
 
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="licentaApp.aplicareConsultatie.rezolvata">Rezolvata</span></dt>
-                <dd>
-                    <span>{{ aplicareConsultatie.rezolvata }}</span>
+                <dt *ngIf="!aplicareConsultatie?.rezolvata"><span jhiTranslate="licentaApp.aplicareConsultatie.rezolvata">Rezolvata</span></dt>
+                <dd *ngIf="!aplicareConsultatie?.rezolvata">
+                    <span>Nu</span>
                 </dd>
-                <dt><span jhiTranslate="licentaApp.aplicareConsultatie.acceptata">Acceptata</span></dt>
-                <dd>
-                    <span>{{ aplicareConsultatie.acceptata }}</span>
+                <dt *ngIf="aplicareConsultatie?.rezolvata"><span jhiTranslate="licentaApp.aplicareConsultatie.acceptata">Acceptata</span></dt>
+                <dd *ngIf="aplicareConsultatie?.rezolvata">
+                    <span *ngIf="aplicareConsultatie?.acceptata">Da</span>
+                    <span *ngIf="!aplicareConsultatie?.acceptata">Nu</span>
                 </dd>
                 <dt><span jhiTranslate="licentaApp.aplicareConsultatie.student">Student</span></dt>
                 <dd>
-                    <div *ngIf="aplicareConsultatie.student">
-                        <a [routerLink]="['/student-info', aplicareConsultatie.student?.id, 'view']">{{ aplicareConsultatie.student?.id }}</a>
+                    <div *ngIf="aplicareConsultatie?.student">
+                        <a [routerLink]="['/student-info', aplicareConsultatie?.student?.id, 'view']">{{ aplicareConsultatie?.student?.user?.lastName }} {{ aplicareConsultatie?.student?.user?.firstName }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="licentaApp.aplicareConsultatie.consultatie">Consultatie</span></dt>
                 <dd>
-                    <div *ngIf="aplicareConsultatie.consultatie">
-                        <a [routerLink]="['/consultatie', aplicareConsultatie.consultatie?.id, 'view']">{{ aplicareConsultatie.consultatie?.id }}</a>
+                    <div *ngIf="aplicareConsultatie?.consultatie">
+                        <a [routerLink]="['/consultatie', aplicareConsultatie?.consultatie?.id, 'view']">Consultatia profesorului {{ aplicareConsultatie?.consultatie?.profesor?.user?.lastName }} {{ aplicareConsultatie?.consultatie?.profesor?.user?.firstName }} la {{ aplicareConsultatie?.consultatie?.data | date:'medium'}}</a>
                     </div>
                 </dd>
             </dl>
@@ -37,7 +38,7 @@
             </button>
 
             <button type="button"
-                    [routerLink]="['/aplicare-consultatie', aplicareConsultatie.id, 'edit']"
+                    [routerLink]="['/aplicare-consultatie', aplicareConsultatie?.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>

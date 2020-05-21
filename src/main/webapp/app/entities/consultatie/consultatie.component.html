@@ -1,11 +1,11 @@
 <div>
     <h2 id="page-heading">
-        <span jhiTranslate="licentaApp.consultatie.home.title">Consultaties</span>
-
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-consultatie" [routerLink]="['/consultatie/new']">
+        <span >Consultatii</span>
+        <!-- jhiTranslate="licentaApp.consultatie.home.title" -->
+        <button *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_PROFESOR']" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-consultatie" [routerLink]="['/consultatie/new']">
             <fa-icon icon="plus"></fa-icon>
-            <span  jhiTranslate="licentaApp.consultatie.home.createLabel">
-            Create a new Consultatie
+            <span>
+            Creeaza o noua Consultatie
             </span>
         </button>
     </h2>
@@ -14,18 +14,20 @@
 
     <jhi-alert></jhi-alert>
 
+
     <div class="alert alert-warning" id="no-result" *ngIf="consultaties?.length === 0">
-        <span jhiTranslate="licentaApp.consultatie.home.notFound">No consultaties found</span>
+        <span>Nu s-a gasit nici o Consultatie</span>
+        <!-- jhiTranslate="licentaApp.consultatie.home.notFound" -->
     </div>
 
     <div class="table-responsive" id="entities" *ngIf="consultaties?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th *jhiHasAnyAuthority="['ROLE_ADMIN']" scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="data"><span jhiTranslate="licentaApp.consultatie.data">Data</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="rezolvata"><span jhiTranslate="licentaApp.consultatie.rezolvata">Rezolvata</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="acceptata"><span jhiTranslate="licentaApp.consultatie.acceptata">Acceptata</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="rezolvata"><span >Expirata</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="acceptata"><span >Ocupata</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="student.id"><span jhiTranslate="licentaApp.consultatie.student">Student</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="profesor.id"><span jhiTranslate="licentaApp.consultatie.profesor">Profesor</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
@@ -33,18 +35,20 @@
             </thead>
             <tbody>
                 <tr *ngFor="let consultatie of consultaties ;trackBy: trackId">
-                    <td><a [routerLink]="['/consultatie', consultatie.id, 'view']">{{ consultatie.id }}</a></td>
-                    <td>{{ consultatie.data | date:'medium' }}</td>
-                    <td>{{ consultatie.rezolvata }}</td>
-                    <td>{{ consultatie.acceptata }}</td>
+                    <td *jhiHasAnyAuthority="['ROLE_ADMIN']" ><a [routerLink]="['/consultatie', consultatie.id, 'view']">{{ consultatie.id }}</a></td>
+                    <td><a [routerLink]="['/consultatie', consultatie.id, 'view']">{{ consultatie.data | date:'medium' }}</a></td>
+                    <td *ngIf="consultatie.rezolvata">Da</td>
+                    <td *ngIf="!consultatie.rezolvata">Nu</td>
+                    <td *ngIf="consultatie.acceptata">Da</td>
+                    <td *ngIf="!consultatie.acceptata">Nu</td>
                     <td>
                         <div *ngIf="consultatie.student">
-                            <a [routerLink]="['/student-info', consultatie.student?.id, 'view']" >{{ consultatie.student?.id }}</a>
+                            <a [routerLink]="['/student-info', consultatie.student?.id, 'view']" >{{ consultatie.student?.user?.lastName }} {{ consultatie.student?.user?.firstName }}</a>
                         </div>
                     </td>
                     <td>
                         <div *ngIf="consultatie.profesor">
-                            <a [routerLink]="['/profesor-info', consultatie.profesor?.id, 'view']" >{{ consultatie.profesor?.id }}</a>
+                            <a [routerLink]="['/profesor-info', consultatie.profesor?.id, 'view']" >{{ consultatie.profesor?.user?.lastName }} {{ consultatie.profesor?.user?.firstName }}</a>
                         </div>
                     </td>
                     <td class="text-right">
@@ -56,18 +60,30 @@
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                             </button>
 
-                            <button type="submit"
+                            <button type="submit" *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_PROFESOR']"
                                     [routerLink]="['/consultatie', consultatie.id, 'edit']"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                             </button>
+                            <div>
+                                <button type="submit" (click)="delete(consultatie)" *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_PROFESOR']"
+                                        class="btn btn-danger btn-sm">
+                                    <fa-icon icon="times"></fa-icon>
+                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                                </button>
+                            </div>
 
-                            <button type="submit" (click)="delete(consultatie)"
-                                    class="btn btn-danger btn-sm">
-                                <fa-icon icon="times"></fa-icon>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                            </button>
+                            <div *ngIf="consultatie.rezolvata === false">
+                                <div *jhiHasAnyAuthority="['ROLE_STUDENT']">
+                                        <button type="submit" *ngIf="!listaConsultatiiDejaAplicate.includes(consultatie.id)"  (click)="aplica(consultatie.id)"
+                                                class="btn btn-info btn-sm">
+                                            <fa-icon icon="pencil-alt"></fa-icon>
+                                            <span class="d-none d-md-inline">Aplica</span>
+                                        </button>
+                                </div>
+                                
+                            </div>
                         </div>
                     </td>
                 </tr>

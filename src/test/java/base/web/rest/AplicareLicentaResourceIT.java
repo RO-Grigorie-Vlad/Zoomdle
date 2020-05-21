@@ -4,6 +4,10 @@ import base.LicentaApp;
 import base.domain.AplicareLicenta;
 import base.repository.AplicareLicentaRepository;
 import base.service.AplicareLicentaService;
+import base.service.LicentaService;
+import base.service.ProfesorInfoService;
+import base.service.StudentInfoService;
+import base.service.UserService;
 import base.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
+
+import base.service.MailService;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -47,6 +53,21 @@ public class AplicareLicentaResourceIT {
     private AplicareLicentaService aplicareLicentaService;
 
     @Autowired
+    private LicentaService licentaService;
+
+    @Autowired
+    private StudentInfoService studentInfoService;
+
+    @Autowired
+    private ProfesorInfoService profesorInfoService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -65,10 +86,13 @@ public class AplicareLicentaResourceIT {
 
     private AplicareLicenta aplicareLicenta;
 
+    
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AplicareLicentaResource aplicareLicentaResource = new AplicareLicentaResource(aplicareLicentaService);
+        final AplicareLicentaResource aplicareLicentaResource = new AplicareLicentaResource(aplicareLicentaService, licentaService,  studentInfoService, userService, profesorInfoService, 
+                                                                                            mailService);
         this.restAplicareLicentaMockMvc = MockMvcBuilders.standaloneSetup(aplicareLicentaResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

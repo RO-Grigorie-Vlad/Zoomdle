@@ -3,7 +3,11 @@ package base.web.rest;
 import base.LicentaApp;
 import base.domain.Licenta;
 import base.repository.LicentaRepository;
+import base.service.AplicareLicentaService;
 import base.service.LicentaService;
+import base.service.ProfesorInfoService;
+import base.service.StudentInfoService;
+import base.service.UserService;
 import base.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -50,6 +54,18 @@ public class LicentaResourceIT {
     private LicentaService licentaService;
 
     @Autowired
+    private AplicareLicentaService aplicareLicentaService;
+
+    @Autowired
+    private UserService userService;
+    
+    @Autowired
+    private StudentInfoService studentInfoService;
+
+    @Autowired
+    private ProfesorInfoService profesorInfoService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -71,7 +87,7 @@ public class LicentaResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final LicentaResource licentaResource = new LicentaResource(licentaService);
+        final LicentaResource licentaResource = new LicentaResource(licentaService, aplicareLicentaService, userService, studentInfoService, profesorInfoService);
         this.restLicentaMockMvc = MockMvcBuilders.standaloneSetup(licentaResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

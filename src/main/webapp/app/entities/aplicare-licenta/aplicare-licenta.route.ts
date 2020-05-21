@@ -42,7 +42,7 @@ export const aplicareLicentaRoute: Routes = [
       pagingParams: JhiResolvePagingParams
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN', 'ROLE_STUDENT', 'ROLE_PROFESOR'],
       defaultSort: 'id,asc',
       pageTitle: 'licentaApp.aplicareLicenta.home.title'
     },
@@ -55,7 +55,7 @@ export const aplicareLicentaRoute: Routes = [
       aplicareLicenta: AplicareLicentaResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN', 'ROLE_STUDENT', 'ROLE_PROFESOR'],
       pageTitle: 'licentaApp.aplicareLicenta.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -67,7 +67,7 @@ export const aplicareLicentaRoute: Routes = [
       aplicareLicenta: AplicareLicentaResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN', 'ROLE_STUDENT'],
       pageTitle: 'licentaApp.aplicareLicenta.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -79,7 +79,7 @@ export const aplicareLicentaRoute: Routes = [
       aplicareLicenta: AplicareLicentaResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       pageTitle: 'licentaApp.aplicareLicenta.home.title'
     },
     canActivate: [UserRouteAccessService]

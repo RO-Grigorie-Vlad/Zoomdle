@@ -2,10 +2,10 @@
   "licentaApp": {
     "licenta": {
       "home": {
-        "title": "Licentas",
+        "title": "Licente",
         "createLabel": "Create a new Licenta",
         "createOrEditLabel": "Create or edit a Licenta",
-        "notFound": "No Licentas found"
+        "notFound": "No Licente found"
       },
       "created": "A new Licenta is created with identifier {{ param }}",
       "updated": "A Licenta is updated with identifier {{ param }}",
@@ -19,7 +19,7 @@
       "denumire": "Denumire",
       "descriere": "Descriere",
       "atribuita": "Atribuita",
-      "studentInfo": "Student Info",
+      "studentInfo": "Student",
       "aplicareLicenta": "Aplicare Licenta",
       "profesor": "Profesor"
     }

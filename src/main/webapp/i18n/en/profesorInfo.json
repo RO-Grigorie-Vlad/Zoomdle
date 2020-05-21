@@ -14,7 +14,7 @@
         "question": "Are you sure you want to delete Profesor Info {{ id }}?"
       },
       "detail": {
-        "title": "Profesor Info"
+        "title": "Profesor"
       },
       "user": "User",
       "studentCoordonat": "Student Coordonat",

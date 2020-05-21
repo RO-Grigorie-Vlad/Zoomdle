@@ -4,6 +4,8 @@ import base.config.Constants;
 import base.domain.Authority;
 import base.domain.User;
 import base.repository.AuthorityRepository;
+import base.repository.ProfesorInfoRepository;
+import base.repository.StudentInfoRepository;
 import base.repository.UserRepository;
 import base.security.AuthoritiesConstants;
 import base.security.SecurityUtils;
@@ -25,6 +27,9 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
+import base.service.mapper.UserMapper;
+import base.domain.StudentInfo;
+import base.domain.ProfesorInfo;
 
 /**
  * Service class for managing users.
@@ -43,11 +48,34 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    private final ProfesorInfoRepository profesorInfoRepository;
+
+    private final StudentInfoRepository studentInfoRepository;
+
+    private final UserMapper userMapper;
+
+    private final StudentInfoService studentInfoService;
+
+    private final ProfesorInfoService profesorInfoService;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager, StudentInfoRepository studentInfoRepository,StudentInfoService studentInfoService, ProfesorInfoRepository profesorInfoRepository,ProfesorInfoService profesorInfoService, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.profesorInfoRepository = profesorInfoRepository;
+        this.userMapper = userMapper;
+        this.studentInfoRepository = studentInfoRepository;
+        this.studentInfoService = studentInfoService;
+        this.profesorInfoService = profesorInfoService;
+    }
+
+    public Optional<User> findOneByLogin(String login){
+        return this.userRepository.findOneByLogin(login);
+    }
+
+    public boolean hasRole(User user, String role) {
+        return user.getAuthorities().stream().map(Authority::getName).anyMatch(a -> a.equals(role));
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -161,8 +189,28 @@ public class UserService {
                 .map(Optional::get)
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
+            System.out.println(authorities);
         }
+
         userRepository.save(user);
+
+        // create a StudentInfo if user has the role ROLE_STUDENT
+        // OR create a ProfesorInfo if user has the role ROLE_PROFESOR
+        Set<Authority> currentUserAuthorities = user.getAuthorities();
+        for(Authority auth : currentUserAuthorities) {
+            
+            if(auth.getName().equals(AuthoritiesConstants.STUDENT)) {
+                StudentInfo nouStudent = new StudentInfo();
+                nouStudent.setUser(user);
+                studentInfoService.save(nouStudent);
+            }
+            else if(auth.getName().equals(AuthoritiesConstants.PROFESOR)) {
+                ProfesorInfo nouProfesor = new ProfesorInfo();
+                nouProfesor.setUser(user);
+                profesorInfoService.save(nouProfesor);
+            }
+        }
+       
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
         return user;
@@ -271,6 +319,8 @@ public class UserService {
     public Optional<User> getUserWithAuthorities() {
         return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
     }
+
+    
 
     /**
      * Not activated users should be automatically deleted after 3 days.

@@ -1,12 +1,24 @@
 <div>
     <h2 id="page-heading">
-        <span jhiTranslate="licentaApp.licenta.home.title">Licentas</span>
+        <span >Licente</span>
+        <!-- jhiTranslate="licentaApp.licenta.home.title" -->
 
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-licenta" [routerLink]="['/licenta/new']">
+        <button id="jh-create-entity" *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_PROFESOR']" 
+        class="btn btn-primary float-right jh-create-entity create-licenta" [routerLink]="['/licenta/new']">
             <fa-icon icon="plus"></fa-icon>
-            <span  jhiTranslate="licentaApp.licenta.home.createLabel">
-            Create a new Licenta
+            <span>
+            Creeaza o noua Licenta
             </span>
+            <!--jhiTranslate="licentaApp.licenta.home.createLabel" -->
+        </button>
+
+        <button *jhiHasAnyAuthority="['ROLE_PROFESOR']" 
+            style="background-color:coral; border-color: coral;" 
+            id="jh-create-entity" (click)="reloadPageProfesor()" 
+            class="btn btn-primary float-right jh-create-entity create-licenta" >
+                <span >
+                    Licentele mele
+                </span>
         </button>
     </h2>
 
@@ -15,36 +27,39 @@
     <jhi-alert></jhi-alert>
 
     <div class="alert alert-warning" id="no-result" *ngIf="licentas?.length === 0">
-        <span jhiTranslate="licentaApp.licenta.home.notFound">No licentas found</span>
+        <span >Momentan nu exista licente</span>
     </div>
+    
 
     <div class="table-responsive" id="entities" *ngIf="licentas?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col" *jhiHasAnyAuthority="['ROLE_ADMIN']" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th> 
                     <th scope="col"  jhiSortBy="denumire"><span jhiTranslate="licentaApp.licenta.denumire">Denumire</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="descriere"><span jhiTranslate="licentaApp.licenta.descriere">Descriere</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="atribuita"><span jhiTranslate="licentaApp.licenta.atribuita">Atribuita</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="studentInfo.id"><span jhiTranslate="licentaApp.licenta.studentInfo">Student Info</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="studentInfo.id"><span >Student</span> <fa-icon icon="sort"></fa-icon></th> 
+                    
                     <th scope="col"  jhiSortBy="profesor.id"><span jhiTranslate="licentaApp.licenta.profesor">Profesor</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let licenta of licentas ;trackBy: trackId">
-                    <td><a [routerLink]="['/licenta', licenta.id, 'view']">{{ licenta.id }}</a></td>
-                    <td>{{ licenta.denumire }}</td>
-                    <td>{{ licenta.descriere }}</td>
-                    <td>{{ licenta.atribuita }}</td>
+                    <td *jhiHasAnyAuthority="['ROLE_ADMIN']">{{ licenta?.id }}</td>
+                    <td><a [routerLink]="['/licenta', licenta.id, 'view']"> {{ licenta?.denumire }}</a></td>
+                    <td>{{ licenta?.descriere }}</td>
+                    <td *ngIf="licenta.atribuita">Da</td>
+                    <td *ngIf="!licenta.atribuita">Nu</td>
                     <td>
                         <div *ngIf="licenta.studentInfo">
-                            <a [routerLink]="['/student-info', licenta.studentInfo?.id, 'view']" >{{ licenta.studentInfo?.id }}</a>
+                            <a [routerLink]="['/student-info', licenta.studentInfo?.id, 'view']" >{{ licenta.studentInfo?.user.lastName }} {{ licenta.studentInfo?.user.firstName }}</a>
                         </div>
                     </td>
                     <td>
                         <div *ngIf="licenta.profesor">
-                            <a [routerLink]="['/profesor-info', licenta.profesor?.id, 'view']" >{{ licenta.profesor?.id }}</a>
+                            <a [routerLink]="['/profesor-info', licenta.profesor?.id, 'view']" >{{ licenta.profesor?.user.lastName }} {{ licenta.profesor?.user.firstName }}</a>
                         </div>
                     </td>
                     <td class="text-right">
@@ -55,19 +70,47 @@
                                 <fa-icon icon="eye"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                             </button>
-
-                            <button type="submit"
-                                    [routerLink]="['/licenta', licenta.id, 'edit']"
-                                    class="btn btn-primary btn-sm">
+                            <button  type="submit" *jhiHasAnyAuthority="['ROLE_ADMIN']" [routerLink]="['/licenta', licenta.id, 'edit']" class="btn btn-primary btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                                <span  class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                             </button>
 
-                            <button type="submit" (click)="delete(licenta)"
-                                    class="btn btn-danger btn-sm">
+                            <div *ngIf="licenta.profesor?.id === curentProfesorID">
+                                <button  type="submit" *jhiHasAnyAuthority="['ROLE_PROFESOR']"
+                                            [routerLink]="['/licenta', licenta.id, 'edit']"
+                                            class="btn btn-primary btn-sm">
+                                    <fa-icon icon="pencil-alt"></fa-icon>
+                                    <span  class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                                </button>
+                            </div>
+                            
+                            <button type="submit" *jhiHasAnyAuthority="['ROLE_ADMIN']" (click)="delete(licenta)"
+                                   class="btn btn-danger btn-sm">
                                 <fa-icon icon="times"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                             </button>
+                            <div *ngIf="licenta.profesor?.id === curentProfesorID">
+                                 <button type="submit" *jhiHasAnyAuthority="['ROLE_PROFESOR']" (click)="delete(licenta)"
+                                            class="btn btn-danger btn-sm">
+                                    <fa-icon icon="times"></fa-icon>
+                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                                </button>
+                            </div>
+                            
+                            
+                            <div *ngIf="licenta.atribuita === false">  
+                                <div *ngIf="!areLicenta">
+                                    <div *ngIf="!listaLicenteDejaAplicate.includes(licenta.id)">
+                                        <button style="background-color:green; border-color: green;" type="submit" *jhiHasAnyAuthority="['ROLE_STUDENT']" (click)="aplicaLaLicenta(licenta.id)"
+                                                class="btn btn-info btn-sm">
+                                            <fa-icon icon="pencil-alt"></fa-icon>
+                                            <span class="d-none d-md-inline">Aplica</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                           
                         </div>
                     </td>
                 </tr>
@@ -84,4 +127,5 @@
             <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
+    
 </div>

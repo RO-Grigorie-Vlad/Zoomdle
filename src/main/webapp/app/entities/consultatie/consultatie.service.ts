@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
 import { IConsultatie } from 'app/shared/model/consultatie.model';
+import { LicentaDTO } from 'app/shared/model/licenta-dto';
 
 type EntityResponseType = HttpResponse<IConsultatie>;
 type EntityArrayResponseType = HttpResponse<IConsultatie[]>;
@@ -14,6 +15,8 @@ type EntityArrayResponseType = HttpResponse<IConsultatie[]>;
 @Injectable({ providedIn: 'root' })
 export class ConsultatieService {
   public resourceUrl = SERVER_API_URL + 'api/consultaties';
+  public aplicaResourceUrl = SERVER_API_URL + 'api/consultatie/aplica';
+  public verificaAplicariUrl = SERVER_API_URL + 'api/aplicare-consultaties/student';
 
   constructor(protected http: HttpClient) {}
 
@@ -46,6 +49,14 @@ export class ConsultatieService {
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  public aplica(dataToSend: LicentaDTO): Observable<HttpResponse<LicentaDTO>> {
+    return this.http.post<LicentaDTO>(this.aplicaResourceUrl, dataToSend, { observe: 'response' });
+  }
+
+  verificaAplicari(): Observable<number[]> {
+    return this.http.get<number[]>(this.verificaAplicariUrl);
   }
 
   protected convertDateFromClient(consultatie: IConsultatie): IConsultatie {

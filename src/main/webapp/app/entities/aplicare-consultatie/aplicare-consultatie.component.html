@@ -1,13 +1,16 @@
 <div>
     <h2 id="page-heading">
-        <span jhiTranslate="licentaApp.aplicareConsultatie.home.title">Aplicare Consultaties</span>
+        <span >Aplicari la Consultatii</span>
+        <!-- jhiTranslate="licentaApp.aplicareConsultatie.home.title" -->
 
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-aplicare-consultatie" [routerLink]="['/aplicare-consultatie/new']">
+         <!-- <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-aplicare-consultatie" [routerLink]="['/aplicare-consultatie/new']">
             <fa-icon icon="plus"></fa-icon>
-            <span  jhiTranslate="licentaApp.aplicareConsultatie.home.createLabel">
-            Create a new Aplicare Consultatie
+            <span>
+            Creeare o noua Aplicatie Consultatie
             </span>
-        </button>
+           
+        </button> -->
+         <!-- jhiTranslate="licentaApp.aplicareConsultatie.home.createLabel" -->
     </h2>
 
     <jhi-alert-error></jhi-alert-error>
@@ -22,29 +25,33 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th *jhiHasAnyAuthority="['ROLE_ADMIN']" scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="consultatie.id"><span jhiTranslate="licentaApp.aplicareConsultatie.consultatie">Consultatie</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="rezolvata"><span jhiTranslate="licentaApp.aplicareConsultatie.rezolvata">Rezolvata</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="acceptata"><span jhiTranslate="licentaApp.aplicareConsultatie.acceptata">Acceptata</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="student.id"><span jhiTranslate="licentaApp.aplicareConsultatie.student">Student</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="consultatie.id"><span jhiTranslate="licentaApp.aplicareConsultatie.consultatie">Consultatie</span> <fa-icon icon="sort"></fa-icon></th>
+                    
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let aplicareConsultatie of aplicareConsultaties ;trackBy: trackId">
-                    <td><a [routerLink]="['/aplicare-consultatie', aplicareConsultatie.id, 'view']">{{ aplicareConsultatie.id }}</a></td>
-                    <td>{{ aplicareConsultatie.rezolvata }}</td>
-                    <td>{{ aplicareConsultatie.acceptata }}</td>
-                    <td>
-                        <div *ngIf="aplicareConsultatie.student">
-                            <a [routerLink]="['/student-info', aplicareConsultatie.student?.id, 'view']" >{{ aplicareConsultatie.student?.id }}</a>
-                        </div>
-                    </td>
+                    <td *jhiHasAnyAuthority="['ROLE_ADMIN']" ><a [routerLink]="['/aplicare-consultatie', aplicareConsultatie.id, 'view']">{{ aplicareConsultatie.id }}</a></td>
                     <td>
                         <div *ngIf="aplicareConsultatie.consultatie">
-                            <a [routerLink]="['/consultatie', aplicareConsultatie.consultatie?.id, 'view']" >{{ aplicareConsultatie.consultatie?.id }}</a>
+                            <a [routerLink]="['/consultatie', aplicareConsultatie.consultatie?.id, 'view']" >{{ aplicareConsultatie.consultatie?.data | date:'medium'}}</a>
                         </div>
                     </td>
+                    <td style="font-weight: bold;" *ngIf="aplicareConsultatie.rezolvata">Da</td>
+                    <td style="font-weight: bold;" *ngIf="!aplicareConsultatie.rezolvata">Nu</td>
+                    <td style="font-weight: bold;" *ngIf="aplicareConsultatie.acceptata">Da</td>
+                    <td style="font-weight: bold;" *ngIf="!aplicareConsultatie.acceptata">Nu</td>
+                    <td>
+                        <div *ngIf="aplicareConsultatie.student">
+                            <a [routerLink]="['/student-info', aplicareConsultatie.student?.id, 'view']" >{{ aplicareConsultatie.student?.user.lastName }} {{ aplicareConsultatie.student?.user.firstName }}</a>
+                        </div>
+                    </td>
+                    
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"
@@ -54,18 +61,33 @@
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                             </button>
 
-                            <button type="submit"
+                            <button *jhiHasAnyAuthority="['ROLE_ADMIN']" type="submit"
                                     [routerLink]="['/aplicare-consultatie', aplicareConsultatie.id, 'edit']"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                             </button>
 
-                            <button type="submit" (click)="delete(aplicareConsultatie)"
+                            <button *jhiHasAnyAuthority="['ROLE_ADMIN']" type="submit" (click)="delete(aplicareConsultatie)"
                                     class="btn btn-danger btn-sm">
                                 <fa-icon icon="times"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                             </button>
+
+                            <div *ngIf="aplicareConsultatie.rezolvata === false">
+                                <button style="background-color:green; border-color: green;" id="jh-create-entity" type="submit"  *jhiHasAnyAuthority="['ROLE_PROFESOR']" (click)="raspundeLaAplicatie(aplicareConsultatie.id, true)"
+                                        class="btn btn-info btn-sm">
+                                    <fa-icon icon="pencil-alt"></fa-icon>
+                                    <span class="d-none d-md-inline">Accepta</span>
+                                </button>
+                            </div>
+                            <div *ngIf="aplicareConsultatie.rezolvata === false">
+                                <button type="submit" *jhiHasAnyAuthority="['ROLE_PROFESOR']" (click)="raspundeLaAplicatie(aplicareConsultatie.id, false)"
+                                    class="btn btn-danger btn-sm">
+                                    <fa-icon icon="pencil-alt"></fa-icon>
+                                    <span class="d-none d-md-inline">Respinge</span>
+                                </button>
+                            </div>
                         </div>
                     </td>
                 </tr>

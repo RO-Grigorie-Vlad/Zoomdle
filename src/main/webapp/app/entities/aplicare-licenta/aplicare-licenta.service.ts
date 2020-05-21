@@ -12,6 +12,7 @@ type EntityArrayResponseType = HttpResponse<IAplicareLicenta[]>;
 @Injectable({ providedIn: 'root' })
 export class AplicareLicentaService {
   public resourceUrl = SERVER_API_URL + 'api/aplicare-licentas';
+  public customResourceURL = SERVER_API_URL + 'api/aplicare-licentas/raspunde';
 
   constructor(protected http: HttpClient) {}
 
@@ -34,5 +35,9 @@ export class AplicareLicentaService {
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  raspunde(aplicareLicentaID: number, raspuns: boolean): Observable<EntityResponseType> {
+    return this.http.post<IAplicareLicenta>(this.customResourceURL, { aplicareLicentaID, raspuns }, { observe: 'response' });
   }
 }

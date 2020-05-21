@@ -3,7 +3,12 @@ package base.web.rest;
 import base.LicentaApp;
 import base.domain.Consultatie;
 import base.repository.ConsultatieRepository;
+import base.service.AplicareConsultatieService;
 import base.service.ConsultatieService;
+import base.service.LicentaService;
+import base.service.ProfesorInfoService;
+import base.service.StudentInfoService;
+import base.service.UserService;
 import base.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -53,6 +58,21 @@ public class ConsultatieResourceIT {
 
     @Autowired
     private ConsultatieService consultatieService;
+    
+    @Autowired
+    private UserService userService;
+    
+    @Autowired
+    private StudentInfoService studentInfoService;
+    
+    @Autowired
+    private ProfesorInfoService profesorInfoService;
+
+    @Autowired
+    private LicentaService licentaservice;
+    
+    @Autowired
+    private AplicareConsultatieService aplicareConsultatieService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -73,10 +93,12 @@ public class ConsultatieResourceIT {
 
     private Consultatie consultatie;
 
+    //UserService userService, StudentInfoService studentInfoService, AplicareConsultatieService aplicareConsultatieService
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ConsultatieResource consultatieResource = new ConsultatieResource(consultatieService);
+        final ConsultatieResource consultatieResource = new ConsultatieResource(consultatieService, userService, studentInfoService, aplicareConsultatieService, profesorInfoService, licentaservice);
         this.restConsultatieMockMvc = MockMvcBuilders.standaloneSetup(consultatieResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -243,7 +265,7 @@ public class ConsultatieResourceIT {
         Consultatie testConsultatie = consultatieList.get(consultatieList.size() - 1);
         assertThat(testConsultatie.getData()).isEqualTo(UPDATED_DATA);
         assertThat(testConsultatie.isRezolvata()).isEqualTo(UPDATED_REZOLVATA);
-        assertThat(testConsultatie.isAcceptata()).isEqualTo(UPDATED_ACCEPTATA);
+        assertThat(testConsultatie.isAcceptata()).isEqualTo(false);
     }
 
     @Test

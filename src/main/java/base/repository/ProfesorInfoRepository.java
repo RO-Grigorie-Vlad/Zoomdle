@@ -1,6 +1,9 @@
 package base.repository;
 
 import base.domain.ProfesorInfo;
+import base.domain.User;
+
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
@@ -11,5 +14,7 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface ProfesorInfoRepository extends JpaRepository<ProfesorInfo, Long> {
+
+    Optional<ProfesorInfo> findOneByUser(User user);
 
 }

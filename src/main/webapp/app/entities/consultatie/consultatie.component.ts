@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IConsultatie } from 'app/shared/model/consultatie.model';
@@ -10,6 +10,8 @@ import { IConsultatie } from 'app/shared/model/consultatie.model';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { ConsultatieService } from './consultatie.service';
 import { ConsultatieDeleteDialogComponent } from './consultatie-delete-dialog.component';
+import { LicentaDTO } from 'app/shared/model/licenta-dto';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-consultatie',
@@ -25,16 +27,50 @@ export class ConsultatieComponent implements OnInit, OnDestroy {
   ascending!: boolean;
   ngbPaginationPage = 1;
 
+  currentUser!: Account | null;
+  currentUserLogin!: string;
+  licentaID!: number;
+  succes!: string;
+  dataToSend2!: LicentaDTO;
+
+  isStudent!: Boolean;
+  isProfesor!: Boolean;
+  isAdmin!: Boolean;
+  curentProfesorID!: number;
+  areLicenta!: Boolean;
+
+  listaConsultatiiDejaAplicate: number[] = [];
+
   constructor(
     protected consultatieService: ConsultatieService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
+    protected accountService: AccountService,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected alertService: JhiAlertService
   ) {}
 
   loadPage(page?: number): void {
     const pageToLoad: number = page || this.page;
+
+    this.accountService
+      .getAuthenticationState()
+      .subscribe(account => (account == null ? (this.currentUserLogin = '') : (this.currentUserLogin = account.login)));
+    this.isStudent = this.accountService.hasAnyAuthority('ROLE_STUDENT');
+    if (this.isStudent === true) {
+      this.accountService.verificaLicenta(this.currentUserLogin).subscribe(response => (this.areLicenta = response));
+    }
+
+    this.isProfesor = this.accountService.hasAnyAuthority('ROLE_PROFESOR');
+    if (this.isProfesor === true) {
+      this.accountService.getCurrentProfesorId(this.currentUserLogin).subscribe(response => (this.curentProfesorID = response));
+    }
+
+    this.isAdmin = this.accountService.hasAnyAuthority('ROLE_ADMIN');
+    if (this.isStudent === true) {
+      this.consultatieService.verificaAplicari().subscribe(response => (this.listaConsultatiiDejaAplicate = response));
+    }
 
     this.consultatieService
       .query({
@@ -57,6 +93,35 @@ export class ConsultatieComponent implements OnInit, OnDestroy {
       this.loadPage();
     });
     this.registerChangeInConsultaties();
+  }
+
+  aplica(consultatieID: number): void {
+    this.dataToSend2 = new LicentaDTO(this.currentUserLogin, consultatieID);
+
+    this.consultatieService.aplica(this.dataToSend2).subscribe(() => this.loadPage());
+    // alerta de success
+    this.alertService.get().push(
+      this.alertService.addAlert(
+        {
+          type: 'success',
+          msg: 'licentaApp.consultatie.aplica',
+          timeout: 3000,
+          toast: false,
+          scoped: true
+        },
+        this.alertService.get()
+      )
+    );
+    // window.location.reload();
+    // this.licentaService.aplica2(this.currentUserLogin,licentaID2);
+  }
+
+  checkIncludes(consultatieID: number): Boolean {
+    if (this.listaConsultatiiDejaAplicate.includes(consultatieID)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   ngOnDestroy(): void {

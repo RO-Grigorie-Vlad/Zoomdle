@@ -17,7 +17,8 @@
         "title": "Consultatie"
       },
       "data": "Data",
-      "rezolvata": "Rezolvata",
+      "aplica": "Application created",
+      "rezolvata": "Expirata",
       "acceptata": "Acceptata",
       "aplicareConsultatie": "Aplicare Consultatie",
       "student": "Student",

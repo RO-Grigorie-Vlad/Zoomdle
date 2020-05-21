@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "Licenta",
+    "title": "ZOOMDLE",
     "browsehappy": "Folosiți un browser <strong>vechi</strong>. Va rugăm <a href=\"http://browsehappy.com/?locale=en\"> să îl actualizați</a> pentru o experiență îmbunătațită.",
     "menu": {
       "home": "Acasă",
@@ -63,8 +63,8 @@
     "messages": {
       "info": {
         "authenticated": {
-          "prefix": "Dacă doriți să vă ",
-          "link": "autentificați",
+          "prefix": "",
+          "link": "Log in",
           "suffix": ", puteți încerca conturile implicite:<br/>- Administrator (login=\"admin\" și parola=\"admin\") <br/>- Utilizator (login=\"user\" și parola=\"user\")."
         },
         "register": {
@@ -150,5 +150,5 @@
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
     }
   },
-  "footer": "Acesta este subsolul paginii dumneavoastră"
+  "footer": "Grigorie Vlad - Universitatea Politehnica Bucuresti - 2020"
 }

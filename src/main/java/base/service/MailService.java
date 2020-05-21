@@ -87,9 +87,38 @@ public class MailService {
     }
 
     @Async
+    public void customSendEmailFromTemplate(User user, String templateName, String titleKey, String denumire) {
+        if (user.getEmail() == null) {
+            log.debug("Email doesn't exist for user '{}'", user.getLogin());
+            return;
+        }
+        Locale locale = Locale.forLanguageTag(user.getLangKey());
+        Context context = new Context(locale);
+        context.setVariable(USER, user);
+        context.setVariable("denumire", denumire);
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        String content = templateEngine.process(templateName, context);
+        String subject = messageSource.getMessage(titleKey, null, locale);
+        sendEmail(user.getEmail(), subject, content, false, true);
+    }
+
+    @Async
     public void sendActivationEmail(User user) {
         log.debug("Sending activation email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "mail/activationEmail", "email.activation.title");
+    }
+
+    @Async
+    public void sendNotificationEmail (User user, Boolean accepted, String denumireLicenta) {
+        log.debug("Sending notification email to '{}'", user.getEmail());
+        if(accepted == true){
+            log.debug("Application ACCEPTED");
+            customSendEmailFromTemplate(user, "mail/raspunsPozitivLaAplicatieEmail", "raspuns.pozitiv.title", denumireLicenta);   
+        }
+        else{
+            log.debug("Application REJECTED");
+            customSendEmailFromTemplate(user, "mail/raspunsNegativLaAplicatieEmail", "raspuns.negativ.title", denumireLicenta);    
+        }
     }
 
     @Async

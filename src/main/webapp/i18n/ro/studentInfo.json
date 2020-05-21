@@ -14,7 +14,7 @@
         "question": "Sunteți sigur că doriți să ștergeți Student Info {{ id }}?"
       },
       "detail": {
-        "title": "Student Info"
+        "title": "Student"
       },
       "user": "User",
       "aplicareLic": "Aplicare Lic",

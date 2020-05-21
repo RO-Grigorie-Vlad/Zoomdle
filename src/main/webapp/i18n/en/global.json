@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "Licenta",
+    "title": "ZOOMDLE",
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
     "menu": {
       "home": "Home",
@@ -54,8 +54,8 @@
     "messages": {
       "info": {
         "authenticated": {
-          "prefix": "If you want to ",
-          "link": "sign in",
+          "prefix": "",
+          "link": "Sign in",
           "suffix": ", you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\")."
         },
         "register": {
@@ -142,5 +142,5 @@
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
     }
   },
-  "footer": "This is your footer"
+  "footer": "Grigorie Vlad - University Politehnica Bucharest - 2020"
 }

@@ -42,7 +42,7 @@ export const profesorInfoRoute: Routes = [
       pagingParams: JhiResolvePagingParams
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       defaultSort: 'id,asc',
       pageTitle: 'licentaApp.profesorInfo.home.title'
     },
@@ -55,7 +55,7 @@ export const profesorInfoRoute: Routes = [
       profesorInfo: ProfesorInfoResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_USER', 'ROLE_STUDENT', 'ROLE_ADMIN', 'ROLE_PROFESOR'],
       pageTitle: 'licentaApp.profesorInfo.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -67,7 +67,7 @@ export const profesorInfoRoute: Routes = [
       profesorInfo: ProfesorInfoResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       pageTitle: 'licentaApp.profesorInfo.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -79,7 +79,7 @@ export const profesorInfoRoute: Routes = [
       profesorInfo: ProfesorInfoResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       pageTitle: 'licentaApp.profesorInfo.home.title'
     },
     canActivate: [UserRouteAccessService]

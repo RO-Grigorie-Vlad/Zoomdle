@@ -1,7 +1,18 @@
 package base.web.rest;
 
 import base.domain.AplicareConsultatie;
+import base.domain.Consultatie;
+import base.domain.ProfesorInfo;
+import base.domain.StudentInfo;
+import base.domain.User;
+import base.security.AuthoritiesConstants;
+import base.security.SecurityUtils;
 import base.service.AplicareConsultatieService;
+import base.service.ConsultatieService;
+import base.service.ProfesorInfoService;
+import base.service.StudentInfoService;
+import base.service.UserService;
+import base.service.dto.RaspunsAplicatie;
 import base.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -16,10 +27,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,9 +52,19 @@ public class AplicareConsultatieResource {
     private String applicationName;
 
     private final AplicareConsultatieService aplicareConsultatieService;
+    private final StudentInfoService studentInfoService;
+    private final UserService userService;
+    private final ProfesorInfoService profesorInfoService;
+    public final ConsultatieService consultatieService;
 
-    public AplicareConsultatieResource(AplicareConsultatieService aplicareConsultatieService) {
+    public AplicareConsultatieResource(AplicareConsultatieService aplicareConsultatieService, StudentInfoService studentInfoService, 
+                                        UserService userService,ProfesorInfoService profesorInfoService,
+                                        ConsultatieService consultatieService) {
         this.aplicareConsultatieService = aplicareConsultatieService;
+        this.studentInfoService = studentInfoService;
+        this.userService = userService;
+        this.profesorInfoService = profesorInfoService;
+        this.consultatieService = consultatieService;
     }
 
     /**
@@ -61,6 +85,69 @@ public class AplicareConsultatieResource {
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
+
+    @PostMapping("/aplicare-consultaties/raspunde")
+    @Transactional
+    @PreAuthorize("hasRole('ROLE_PROFESOR')")
+    public void raspundeLaAplicatie(@RequestBody RaspunsAplicatie pair) throws URISyntaxException {
+        log.debug("REST request to RESPOND to a AplicareLicenta");
+        Long aplicatieConsultatieID = (long) pair.getAplicareLicentaID();
+        Boolean raspuns = pair.getRaspuns();
+        log.debug("Raspunsul este : " + raspuns);
+
+        Optional<AplicareConsultatie> aplicare = this.aplicareConsultatieService.findOne(aplicatieConsultatieID);
+        if(aplicare.isPresent()){
+            AplicareConsultatie aplicareConsultatie = aplicare.get();
+            aplicareConsultatie.setAcceptata(raspuns);
+            aplicareConsultatie.setRezolvata(true);
+            this.aplicareConsultatieService.save(aplicareConsultatie);
+
+            if(raspuns == true){
+                Consultatie consultatie = aplicareConsultatie.getConsultatie();
+                List<AplicareConsultatie> aplicari = this.aplicareConsultatieService.findAllByConsultatie(consultatie);
+                for (AplicareConsultatie aplicareConsultatie2 : aplicari) {
+                    if(aplicareConsultatie2.getId() != aplicareConsultatie.getId()){
+                        aplicareConsultatie2.setAcceptata(false);
+                        aplicareConsultatie2.setRezolvata(true);
+                        this.aplicareConsultatieService.save(aplicareConsultatie2);
+                    }
+                }
+                consultatie.setStudent(aplicareConsultatie.getStudent());
+                consultatie.setAcceptata(true);
+                this.consultatieService.save(consultatie);
+            }
+        }
+    }
+
+    @GetMapping("/aplicare-consultaties/student")
+    @Transactional
+    public List<Long> verificaAplicari(Pageable pageable) {
+        log.debug("AplicareLicentaResource /aplicare-licentas/student : verificaAplicari");
+        Optional<String> userLoginO = SecurityUtils.getCurrentUserLogin();
+        if(userLoginO.isPresent()){
+            Optional<User> user =  this.userService.findOneByLogin(userLoginO.get());
+            if(user.isPresent()){
+                Optional<StudentInfo> student = this.studentInfoService.findOneByUser(user.get());
+                if(student.isPresent()){
+                    Page<AplicareConsultatie> page = this.aplicareConsultatieService.findAllByStudent(student.get(), pageable);
+                    if(!page.isEmpty()){
+                        List<AplicareConsultatie> listaAplicari = page.getContent();
+                        List<Long> rezultat = new ArrayList<Long>();
+                        for (AplicareConsultatie aplicareConsultatie : listaAplicari) {
+                            rezultat.add(aplicareConsultatie.getConsultatie().getId());    
+                        }
+                        return rezultat;    
+                    }         
+                }
+            } 
+        }
+        
+        return new ArrayList<Long>(); 
+    }
+
+    //Accepta/Refuza aplicatia
+
+
 
     /**
      * {@code PUT  /aplicare-consultaties} : Updates an existing aplicareConsultatie.
@@ -90,9 +177,33 @@ public class AplicareConsultatieResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of aplicareConsultaties in body.
      */
     @GetMapping("/aplicare-consultaties")
+    @Transactional
     public ResponseEntity<List<AplicareConsultatie>> getAllAplicareConsultaties(Pageable pageable) {
-        log.debug("REST request to get a page of AplicareConsultaties");
-        Page<AplicareConsultatie> page = aplicareConsultatieService.findAll(pageable);
+
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.STUDENT)) {
+            log.debug("STUDENT REST request to get a page of AplicareConsultaties");
+
+            Optional<String> userLoginO = SecurityUtils.getCurrentUserLogin();
+            Optional<User> user =  this.userService.findOneByLogin(userLoginO.get());
+            Optional<StudentInfo> student = this.studentInfoService.findOneByUser(user.get());
+
+            Page<AplicareConsultatie> page = this.aplicareConsultatieService.findAllByStudent( student.get(), pageable);
+            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+            return ResponseEntity.ok().headers(headers).body(page.getContent());
+        }
+        else if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.PROFESOR)){
+            log.debug("PROFESOR REST request to get a page of AplicareConsultaties");
+            Optional<String> userLoginO = SecurityUtils.getCurrentUserLogin();
+            Optional<User> user =  this.userService.findOneByLogin(userLoginO.get());
+            Optional<ProfesorInfo> profesor = this.profesorInfoService.findOneByUser(user.get());
+
+            Page<AplicareConsultatie> pageAplicariLicenta = this.aplicareConsultatieService.findAllbyProfesor(profesor.get().getId(), pageable);
+            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), pageAplicariLicenta);
+            return ResponseEntity.ok().headers(headers).body(pageAplicariLicenta.getContent());
+               
+        }
+        log.debug("REST request to get a page of All AplicareConsultaties");
+        Page<AplicareConsultatie> page = this.aplicareConsultatieService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

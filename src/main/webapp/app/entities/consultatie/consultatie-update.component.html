@@ -1,12 +1,12 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-consultatie-heading" jhiTranslate="licentaApp.consultatie.home.createOrEditLabel">Create or edit a Consultatie</h2>
-
+            <h2 id="jhi-consultatie-heading" >Creeaza sau editeaza o Consultatie</h2>
+            <!-- jhiTranslate="licentaApp.consultatie.home.createOrEditLabel" -->
             <div>
                 <jhi-alert-error></jhi-alert-error>
 
-                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
@@ -28,31 +28,31 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="form-group">
                     <label class="form-control-label" jhiTranslate="licentaApp.consultatie.rezolvata" for="field_rezolvata">Rezolvata</label>
                     <input type="checkbox" class="form-control" name="rezolvata" id="field_rezolvata"
                            formControlName="rezolvata"/>
                 </div>
-
+                <!-- 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="licentaApp.consultatie.acceptata" for="field_acceptata">Acceptata</label>
                     <input type="checkbox" class="form-control" name="acceptata" id="field_acceptata"
                            formControlName="acceptata"/>
                 </div>
-
+                -->
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="licentaApp.consultatie.student" for="field_student">Student</label>
                     <select class="form-control" id="field_student" name="student" formControlName="student">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="studentInfoOption.id === editForm.get('student')!.value?.id ? editForm.get('student')!.value : studentInfoOption" *ngFor="let studentInfoOption of studentinfos; trackBy: trackById">{{ studentInfoOption.id }}</option>
+                        <option [ngValue]="null">Nici un student</option>
+                        <option [ngValue]="studentInfoOption.id === editForm.get('student')!.value?.id ? editForm.get('student')!.value : studentInfoOption" *ngFor="let studentInfoOption of studentinfos; trackBy: trackById">{{ studentInfoOption?.user?.lastName }} {{ studentInfoOption?.user?.firstName }}</option>
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="form-group">
                     <label class="form-control-label" jhiTranslate="licentaApp.consultatie.profesor" for="field_profesor">Profesor</label>
                     <select class="form-control" id="field_profesor" name="profesor" formControlName="profesor">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="profesorInfoOption.id === editForm.get('profesor')!.value?.id ? editForm.get('profesor')!.value : profesorInfoOption" *ngFor="let profesorInfoOption of profesorinfos; trackBy: trackById">{{ profesorInfoOption.id }}</option>
+                        <option [ngValue]="profesorInfoOption.id === editForm.get('profesor')!.value?.id ? editForm.get('profesor')!.value : profesorInfoOption" *ngFor="let profesorInfoOption of profesorinfos; trackBy: trackById">{{ profesorInfoOption?.user?.lastName }} {{ profesorInfoOption?.user?.firstName }}</option>
                     </select>
                 </div>
             </div>

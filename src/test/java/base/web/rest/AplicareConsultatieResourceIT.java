@@ -4,6 +4,10 @@ import base.LicentaApp;
 import base.domain.AplicareConsultatie;
 import base.repository.AplicareConsultatieRepository;
 import base.service.AplicareConsultatieService;
+import base.service.ConsultatieService;
+import base.service.ProfesorInfoService;
+import base.service.StudentInfoService;
+import base.service.UserService;
 import base.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -47,6 +51,18 @@ public class AplicareConsultatieResourceIT {
     private AplicareConsultatieService aplicareConsultatieService;
 
     @Autowired
+    private StudentInfoService studentInfoService;
+
+    @Autowired
+    private ProfesorInfoService profesorInfoService;
+
+    @Autowired
+    private ConsultatieService consultatieService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -68,7 +84,8 @@ public class AplicareConsultatieResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AplicareConsultatieResource aplicareConsultatieResource = new AplicareConsultatieResource(aplicareConsultatieService);
+        final AplicareConsultatieResource aplicareConsultatieResource = new AplicareConsultatieResource(aplicareConsultatieService,  studentInfoService, 
+                                                                                     userService, profesorInfoService, consultatieService);
         this.restAplicareConsultatieMockMvc = MockMvcBuilders.standaloneSetup(aplicareConsultatieResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

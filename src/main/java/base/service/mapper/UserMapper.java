@@ -56,7 +56,7 @@ public class UserMapper {
     }
 
 
-    private Set<Authority> authoritiesFromStrings(Set<String> authoritiesAsString) {
+    public Set<Authority> authoritiesFromStrings(Set<String> authoritiesAsString) {
         Set<Authority> authorities = new HashSet<>();
 
         if (authoritiesAsString != null) {

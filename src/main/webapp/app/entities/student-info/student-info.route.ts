@@ -42,7 +42,7 @@ export const studentInfoRoute: Routes = [
       pagingParams: JhiResolvePagingParams
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       defaultSort: 'id,asc',
       pageTitle: 'licentaApp.studentInfo.home.title'
     },
@@ -55,7 +55,7 @@ export const studentInfoRoute: Routes = [
       studentInfo: StudentInfoResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_STUDENT', 'ROLE_PROFESOR', 'ROLE_ADMIN'],
       pageTitle: 'licentaApp.studentInfo.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -67,7 +67,7 @@ export const studentInfoRoute: Routes = [
       studentInfo: StudentInfoResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       pageTitle: 'licentaApp.studentInfo.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -79,7 +79,7 @@ export const studentInfoRoute: Routes = [
       studentInfo: StudentInfoResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       pageTitle: 'licentaApp.studentInfo.home.title'
     },
     canActivate: [UserRouteAccessService]

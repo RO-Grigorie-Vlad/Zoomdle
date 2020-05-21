@@ -1,9 +1,15 @@
 package base.web.rest;
 
+import base.domain.Licenta;
+import base.domain.ProfesorInfo;
+import base.domain.StudentInfo;
 import base.domain.User;
 import base.repository.UserRepository;
 import base.security.SecurityUtils;
+import base.service.LicentaService;
 import base.service.MailService;
+import base.service.ProfesorInfoService;
+import base.service.StudentInfoService;
 import base.service.UserService;
 import base.service.dto.PasswordChangeDTO;
 import base.service.dto.UserDTO;
@@ -15,6 +21,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,13 +48,22 @@ public class AccountResource {
 
     private final UserService userService;
 
+    private final StudentInfoService studentInfoService;
+
+    private final ProfesorInfoService profesorInfoService;
+
+    private final LicentaService licentaService;
+
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, StudentInfoService studentInfoService, LicentaService licentaService, ProfesorInfoService profesorInfoService) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.studentInfoService = studentInfoService;
+        this.licentaService = licentaService;
+        this.profesorInfoService = profesorInfoService;
     }
 
     /**
@@ -104,6 +121,45 @@ public class AccountResource {
         return userService.getUserWithAuthorities()
             .map(UserDTO::new)
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
+    }
+
+    @GetMapping("/account/areLicenta/{userLogin}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STUDENT')")
+    @Transactional
+    public Boolean areLicenta(@PathVariable String userLogin) {
+        Optional<User> user =  this.userService.findOneByLogin(userLogin);
+        log.debug("ZOOM : areLicenta called");
+        if(user.isPresent()){
+            Optional<StudentInfo> student = this.studentInfoService.findOneByUser(user.get());
+            if(student.isPresent()){
+                Optional<Licenta> licenta = this.licentaService.findOneByStudentInfo(student.get());
+                if(licenta.isPresent()){
+                    log.debug("ZOOM : areLicenta called : Studentul ARE LICENTA");
+                    return true;
+                }
+            }    
+        }
+        log.debug("ZOOM : areLicenta called : Studentul NU LICENTA");
+        return false;
+    }
+
+    @GetMapping("/account/profesorCurent/{userLogin}")
+    @PreAuthorize("hasRole('ROLE_PROFESOR')")
+    @Transactional
+    public Long getCurrentProfesorId(@PathVariable String userLogin){
+        Optional<String> userLoginO = SecurityUtils.getCurrentUserLogin();
+        Long profesorID = 0L;
+        if(userLoginO.isPresent()){
+            Optional<User> user =  this.userService.findOneByLogin(userLoginO.get());
+            if(user.isPresent()){
+                Optional<ProfesorInfo> profesor = this.profesorInfoService.findOneByUser(user.get());
+                if(profesor.isPresent()){
+                    profesorID = profesor.get().getId();
+                    return profesorID;
+                }
+            }
+        }
+        return profesorID;
     }
 
     /**

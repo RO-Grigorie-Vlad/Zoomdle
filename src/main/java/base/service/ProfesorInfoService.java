@@ -1,6 +1,7 @@
 package base.service;
 
 import base.domain.ProfesorInfo;
+import base.domain.User;
 import base.repository.ProfesorInfoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,10 @@ public class ProfesorInfoService {
     public Optional<ProfesorInfo> findOne(Long id) {
         log.debug("Request to get ProfesorInfo : {}", id);
         return profesorInfoRepository.findById(id);
+    }
+
+    public Optional<ProfesorInfo> findOneByUser(User user){
+        return this.profesorInfoRepository.findOneByUser(user);
     }
 
     /**

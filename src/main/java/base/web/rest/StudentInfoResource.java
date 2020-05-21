@@ -23,7 +23,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
 
 /**
  * REST controller for managing {@link base.domain.StudentInfo}.
@@ -92,7 +91,12 @@ public class StudentInfoResource {
      * @param filter the filter of the request.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of studentInfos in body.
      */
+
+     // CHANGED HERE :
+
+
     @GetMapping("/student-infos")
+    //@PreAuthorize("hasAuthority('ROLE_PROFESOR')")
     public ResponseEntity<List<StudentInfo>> getAllStudentInfos(Pageable pageable, @RequestParam(required = false) String filter) {
         if ("licenta-is-null".equals(filter)) {
             log.debug("REST request to get all StudentInfos where licenta is null");
@@ -104,6 +108,22 @@ public class StudentInfoResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+
+    @GetMapping("/student-infos/professor/{id}")
+    public ResponseEntity<List<StudentInfo>> getAllStudentInfosByProfessorId(Pageable pageable,@PathVariable Long id, @RequestParam(required = false) String filter) {
+        if ("licenta-is-null".equals(filter)) {
+            log.debug("REST request to get all StudentInfos where licenta is null");
+            return new ResponseEntity<>(studentInfoService.findAllWhereLicentaIsNull(),
+                    HttpStatus.OK);
+        }
+        log.debug("NEW : REST request to get a page of StudentInfos of a Proffesor");
+        //Page<StudentInfo> page = studentInfoService.findAllStudentsOfAProfessor(pageable, id);
+        Page<StudentInfo> page = studentInfoService.findAllStudentsOfAProfessor2(pageable, id);
+        
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
 
     /**
      * {@code GET  /student-infos/:id} : get the "id" studentInfo.

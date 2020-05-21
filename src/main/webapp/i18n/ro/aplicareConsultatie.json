@@ -3,19 +3,21 @@
     "aplicareConsultatie": {
       "home": {
         "title": "Aplicare Consultaties",
-        "createLabel": "Creeare o nouă entitate Aplicare Consultatie",
+        "createLabel": "Creeare o nouă Aplicare Consultatie",
         "createOrEditLabel": "Creeare sau editare Aplicare Consultatie",
         "notFound": "No Aplicare Consultaties found"
       },
-      "created": "A fost creată o nouă entitate Aplicare Consultatie cu identificatorul {{ param }}",
-      "updated": "Aplicare Consultatie cu identificatorul {{ param }} a fost actualizată",
-      "deleted": "Aplicare Consultatie cu identificatorul {{ param }} a fost ștearsă",
+      "created": "A fost creată o nouă Aplicare Consultatie",
+      "updated": "Aplicare Consultatie a fost actualizată",
+      "deleted": "Aplicare Consultatie a fost ștearsă",
       "delete": {
-        "question": "Sunteți sigur că doriți să ștergeți Aplicare Consultatie {{ id }}?"
+        "question": "Sunteți sigur că doriți să ștergeți aceasta Aplicare Consultatie?"
       },
       "detail": {
         "title": "Aplicare Consultatie"
       },
+      "accepta": "Aplicare acceptata",
+      "respinge": "Aplicare respinsa",
       "rezolvata": "Rezolvata",
       "acceptata": "Acceptata",
       "student": "Student",

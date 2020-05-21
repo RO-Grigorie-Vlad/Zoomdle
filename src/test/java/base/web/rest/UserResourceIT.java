@@ -5,6 +5,7 @@ import base.domain.Authority;
 import base.domain.User;
 import base.repository.UserRepository;
 import base.security.AuthoritiesConstants;
+import base.service.StudentInfoService;
 import base.service.dto.UserDTO;
 import base.service.mapper.UserMapper;
 import base.web.rest.vm.ManagedUserVM;
@@ -64,6 +65,9 @@ public class UserResourceIT {
 
     @Autowired
     private UserRepository userRepository;
+    
+    //@Autowired
+    //private StudentInfoService studentInfoService;
 
     @Autowired
     private UserMapper userMapper;

@@ -1,7 +1,7 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="studentInfo">
-            <h2><span jhiTranslate="licentaApp.studentInfo.detail.title">Student Info</span> {{ studentInfo.id }}</h2>
+            <h2><span jhiTranslate="licentaApp.studentInfo.detail.title">Student</span> <p *jhiHasAnyAuthority="['ROLE_ADMIN']"> {{ studentInfo.id }} </p></h2>
 
             <hr>
 
@@ -12,10 +12,24 @@
                 <dd>
                     {{ studentInfo.user?.login }}
                 </dd>
-                <dt><span jhiTranslate="licentaApp.studentInfo.profesor">Profesor</span></dt>
+
+                <dl class="row-md jh-entity-details">
+                    <dt><span >Nume si prenume</span></dt>
+                    <!-- jhiTranslate="licentaApp.profesorInfo.user" -->
+                    <dd>
+                        {{ studentInfo.user?.firstName }} {{ studentInfo.user?.lastName }}
+                    </dd>
+    
+                </dl>
+
+                <dt><span >Profesor coordonator</span></dt>
+                <!-- jhiTranslate="licentaApp.studentInfo.profesor" -->
                 <dd>
                     <div *ngIf="studentInfo.profesor">
-                        <a [routerLink]="['/profesor-info', studentInfo.profesor?.id, 'view']">{{ studentInfo.profesor?.id }}</a>
+                        <a [routerLink]="['/profesor-info', studentInfo.profesor?.id, 'view']">{{ studentInfo.profesor.user?.firstName }} {{ studentInfo.profesor.user?.lastName }}</a>
+                    </div>
+                    <div *ngIf="studentInfo.profesor === null">
+                        <p>Studentul nu are profesor coordonator</p>
                     </div>
                 </dd>
             </dl>
@@ -26,7 +40,7 @@
                 <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
-            <button type="button"
+            <button type="button" *jhiHasAnyAuthority="['ROLE_ADMIN']"
                     [routerLink]="['/student-info', studentInfo.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>

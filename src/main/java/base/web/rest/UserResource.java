@@ -1,10 +1,23 @@
 package base.web.rest;
 
 import base.config.Constants;
+import base.domain.AplicareConsultatie;
+import base.domain.AplicareLicenta;
+import base.domain.Consultatie;
+import base.domain.Licenta;
+import base.domain.ProfesorInfo;
+import base.domain.StudentInfo;
 import base.domain.User;
 import base.repository.UserRepository;
 import base.security.AuthoritiesConstants;
+import base.security.SecurityUtils;
+import base.service.AplicareConsultatieService;
+import base.service.AplicareLicentaService;
+import base.service.ConsultatieService;
+import base.service.LicentaService;
 import base.service.MailService;
+import base.service.ProfesorInfoService;
+import base.service.StudentInfoService;
 import base.service.UserService;
 import base.service.dto.UserDTO;
 import base.web.rest.errors.BadRequestAlertException;
@@ -31,6 +44,9 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+
+
+import javax.transaction.Transactional;
 
 /**
  * REST controller for managing users.
@@ -67,14 +83,34 @@ public class UserResource {
 
     private final UserService userService;
 
+    private final StudentInfoService studentInfoService;
+
+    private final LicentaService licentaService;
+
     private final UserRepository userRepository;
+
+    private final AplicareLicentaService aplicareLicentaService;
+
+    private final ProfesorInfoService profesorInfoService;
+
+    public final ConsultatieService consultatieService;
+
+    private final AplicareConsultatieService aplicareConsultatieService;
 
     private final MailService mailService;
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
+    public UserResource(UserService userService, UserRepository userRepository, MailService mailService, StudentInfoService studentInfoService, 
+                        LicentaService licentaService, AplicareLicentaService aplicareLicentaService, ProfesorInfoService profesorInfoService,
+                        ConsultatieService consultatieService, AplicareConsultatieService aplicareConsultatieService) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;
+        this.studentInfoService = studentInfoService;
+        this.licentaService = licentaService;
+        this.aplicareLicentaService = aplicareLicentaService;
+        this.profesorInfoService = profesorInfoService;
+        this.consultatieService = consultatieService;
+        this.aplicareConsultatieService = aplicareConsultatieService;
     }
 
     /**
@@ -181,8 +217,83 @@ public class UserResource {
      */
     @DeleteMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
     @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
+    @Transactional
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
+        Optional<User> user =  this.userService.findOneByLogin(login);
+        Boolean isStudent =this.userService.hasRole(user.get(), "ROLE_STUDENT");
+        Boolean isProfesor =this.userService.hasRole(user.get(), "ROLE_PROFESOR");
+        
+        if (isStudent) {
+            Optional<StudentInfo> student = this.studentInfoService.findOneByUser(user.get());
+            if(student.isPresent()){
+                Optional<Licenta> licenta =  this.licentaService.findOneByStudentInfo(student.get());
+                if(licenta.isPresent()){
+                    Licenta licentaStudentului = licenta.get();
+                    licentaStudentului.setStudentInfo(null);
+                    licentaStudentului.setAtribuita(false);
+                    this.licentaService.save(licentaStudentului);
+                }
+                List<AplicareLicenta> listaAplicari = this.aplicareLicentaService.findAllByStudent2(student.get().getId());
+                if(listaAplicari.size() != 0){
+                    for (AplicareLicenta aplicareLicenta : listaAplicari) {
+                        Long idAplicare = aplicareLicenta.getId();
+                        this.aplicareLicentaService.delete(idAplicare);
+                    }
+                }
+                List<Consultatie> listaConsultatii = this.consultatieService.findAllByStudent(student.get());
+                if(listaConsultatii.size() != 0){
+                    for (Consultatie consultatie : listaConsultatii) {
+                        consultatie.setStudent(null);
+                        consultatie.setAcceptata(false);
+                        this.consultatieService.save(consultatie);
+                    }
+                }
+                List<AplicareConsultatie> listaAplicariConsultatie = this.aplicareConsultatieService.findAllByStudent2(student.get().getId());
+                if(listaAplicariConsultatie.size() != 0){
+                    for (AplicareConsultatie aplicareConsultatie : listaAplicariConsultatie) {
+                        this.aplicareConsultatieService.delete(aplicareConsultatie.getId());
+                    }
+                }
+                this.studentInfoService.delete(student.get().getId());
+            }    
+        }
+        else if(isProfesor){
+            Optional<ProfesorInfo> profesor= this.profesorInfoService.findOneByUser(user.get());
+            if(profesor.isPresent()){
+                List<Licenta> licenteleProfesorului =  this.licentaService.findAllByProfesor(profesor.get());
+                if(licenteleProfesorului.size() != 0){
+                    for (Licenta licenta : licenteleProfesorului) {
+                        List<AplicareLicenta> listaAplicari =  this.aplicareLicentaService.findAllByLicenta(licenta);
+                        if(listaAplicari.size() != 0){
+                            for (AplicareLicenta aplicari : listaAplicari) {
+                                this.aplicareLicentaService.delete(aplicari.getId());  
+                            }
+                        }
+                        if(licenta.isAtribuita()){
+                            StudentInfo student = licenta.getStudentInfo();
+                            student.setProfesor(null);
+                            this.studentInfoService.save(student);
+                        }
+                        this.licentaService.delete(licenta.getId());
+                    }
+                }
+                List<Consultatie> consultatiileProfesorului = this.consultatieService.findAllByProfesor(profesor.get());
+                if(consultatiileProfesorului.size() != 0){
+                    for (Consultatie consultatie : consultatiileProfesorului) {
+                        List<AplicareConsultatie> listaAplicariConsultatie = this.aplicareConsultatieService.findAllByConsultatie(consultatie);
+                        if(listaAplicariConsultatie.size() != 0){
+                            for (AplicareConsultatie aplicareConsultatie : listaAplicariConsultatie) {
+                                this.aplicareConsultatieService.delete(aplicareConsultatie.getId());
+                            }
+                        }
+                        this.consultatieService.delete(consultatie.getId());
+                    }
+                }
+                this.profesorInfoService.delete(profesor.get().getId());
+            }
+            
+        }
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "userManagement.deleted", login)).build();
     }

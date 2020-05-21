@@ -15,6 +15,10 @@ export class AccountService {
   private userIdentity: Account | null = null;
   private authenticationState = new ReplaySubject<Account | null>(1);
   private accountCache$?: Observable<Account | null>;
+  private areLicenta!: Boolean;
+
+  public areLicentaUrl = SERVER_API_URL + 'api/account/areLicenta';
+  public profesorCurentUrl = SERVER_API_URL + 'api/account/profesorCurent';
 
   constructor(
     private languageService: JhiLanguageService,
@@ -33,6 +37,13 @@ export class AccountService {
     this.authenticationState.next(this.userIdentity);
   }
 
+  public verificaLicenta(login: string): Observable<Boolean> {
+    return this.http.get<Boolean>(`${this.areLicentaUrl}/${login}`);
+  }
+
+  public getCurrentProfesorId(login: string): Observable<number> {
+    return this.http.get<number>(`${this.profesorCurentUrl}/${login}`);
+  }
   hasAnyAuthority(authorities: string[] | string): boolean {
     if (!this.userIdentity || !this.userIdentity.authorities) {
       return false;
@@ -80,7 +91,7 @@ export class AccountService {
   getImageUrl(): string {
     return this.userIdentity ? this.userIdentity.imageUrl : '';
   }
-
+  // another OPTION :
   private fetch(): Observable<Account> {
     return this.http.get<Account>(SERVER_API_URL + 'api/account');
   }

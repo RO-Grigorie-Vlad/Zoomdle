@@ -1,6 +1,8 @@
 package base.service;
 
 import base.domain.Consultatie;
+import base.domain.ProfesorInfo;
+import base.domain.StudentInfo;
 import base.repository.ConsultatieRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -25,6 +28,23 @@ public class ConsultatieService {
 
     public ConsultatieService(ConsultatieRepository consultatieRepository) {
         this.consultatieRepository = consultatieRepository;
+    }
+
+
+    public List<Consultatie> findAll2(){
+        return this.consultatieRepository.findAll2();
+    }
+
+    public List<Consultatie> findAllByProfesor(ProfesorInfo profesor){
+        return this.consultatieRepository.findAllByProfesor(profesor);
+    }
+
+    public List<Consultatie> findAllByStudent(StudentInfo student){
+        return this.consultatieRepository.findAllByStudent(student);
+    }
+
+    public Page<Consultatie> findAllByProfesorPage(Long id, Pageable pagable){
+        return this.consultatieRepository.findAllByProfesorPage(id, pagable);
     }
 
     /**

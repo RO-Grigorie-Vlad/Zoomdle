@@ -14,7 +14,7 @@
         "question": "Are you sure you want to delete Student Info {{ id }}?"
       },
       "detail": {
-        "title": "Student Info"
+        "title": "Student"
       },
       "user": "User",
       "aplicareLic": "Aplicare Lic",

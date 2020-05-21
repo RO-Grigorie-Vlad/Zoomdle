@@ -1,6 +1,8 @@
 package base.service;
 
 import base.domain.AplicareConsultatie;
+import base.domain.Consultatie;
+import base.domain.StudentInfo;
 import base.repository.AplicareConsultatieRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -48,6 +52,34 @@ public class AplicareConsultatieService {
     public Page<AplicareConsultatie> findAll(Pageable pageable) {
         log.debug("Request to get all AplicareConsultaties");
         return aplicareConsultatieRepository.findAll(pageable);
+    }
+
+    public Page<AplicareConsultatie> findAllByStudent(StudentInfo student, Pageable pageable){
+        return this.aplicareConsultatieRepository.findAllByStudent(student, pageable);
+    }
+
+    public List<AplicareConsultatie> findAllByConsultatie(Consultatie consultatie){
+        return this.aplicareConsultatieRepository.findAllByConsultatie(consultatie);
+    }
+
+    public List<AplicareConsultatie> findAllByStudent2(Long givenStudentID){
+        return this.aplicareConsultatieRepository.findAllByStudent2(givenStudentID);
+    }
+
+    public Page<AplicareConsultatie> findAllbyProfesor(Long id, Pageable pageable){
+        return this.aplicareConsultatieRepository.findAllbyProfesor(id, pageable);
+    }
+
+    public List<AplicareConsultatie> findAllByConsultatieList(List<Consultatie> consultatii){
+        List<AplicareConsultatie> rezultat = new ArrayList<AplicareConsultatie>();
+        for (Consultatie consultatie : consultatii) {
+            List<AplicareConsultatie> aplicariConsultatie = this.aplicareConsultatieRepository.findAllByConsultatie(consultatie);
+            for (AplicareConsultatie aplicare : aplicariConsultatie) {
+                rezultat.add(aplicare);
+            }
+        }
+        return rezultat;
+
     }
 
     /**

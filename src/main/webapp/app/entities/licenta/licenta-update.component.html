@@ -6,7 +6,7 @@
             <div>
                 <jhi-alert-error></jhi-alert-error>
 
-                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
@@ -29,25 +29,26 @@
                            formControlName="descriere"/>
                 </div>
 
-                <div class="form-group">
+                <!-- <div  *jhiHasAnyAuthority="'ROLE_ADMIN'" class="form-group">
                     <label class="form-control-label" jhiTranslate="licentaApp.licenta.atribuita" for="field_atribuita">Atribuita</label>
                     <input type="checkbox" class="form-control" name="atribuita" id="field_atribuita"
                            formControlName="atribuita"/>
-                </div>
+                </div> -->
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="licentaApp.licenta.studentInfo" for="field_studentInfo">Student Info</label>
+                    <label class="form-control-label" >Student</label>
+                    <!-- jhiTranslate="licentaApp.licenta.studentInfo" for="field_studentInfo" -->
                     <select class="form-control" id="field_studentInfo" name="studentInfo" formControlName="studentInfo">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="studentInfoOption.id === editForm.get('studentInfo')!.value?.id ? editForm.get('studentInfo')!.value : studentInfoOption" *ngFor="let studentInfoOption of studentinfos; trackBy: trackById">{{ studentInfoOption.id }}</option>
+                        <option [ngValue]="null">Nici un student</option>
+                        <option [ngValue]="studentInfoOption.id === editForm.get('studentInfo')!.value?.id ? editForm.get('studentInfo')!.value : studentInfoOption" *ngFor="let studentInfoOption of studentinfos; trackBy: trackById">{{ studentInfoOption.user.lastName }} {{ studentInfoOption.user.firstName }}</option>
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="form-group">
                     <label class="form-control-label" jhiTranslate="licentaApp.licenta.profesor" for="field_profesor">Profesor</label>
                     <select class="form-control" id="field_profesor" name="profesor" formControlName="profesor">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="profesorInfoOption.id === editForm.get('profesor')!.value?.id ? editForm.get('profesor')!.value : profesorInfoOption" *ngFor="let profesorInfoOption of profesorinfos; trackBy: trackById">{{ profesorInfoOption.id }}</option>
+                        <option [ngValue]="null">Nici un profesor</option>
+                        <option [ngValue]="profesorInfoOption.id === editForm.get('profesor')!.value?.id ? editForm.get('profesor')!.value : profesorInfoOption" *ngFor="let profesorInfoOption of profesorinfos; trackBy: trackById">{{ profesorInfoOption.user.lastName }} {{ profesorInfoOption.user.firstName }}</option>
                     </select>
                 </div>
             </div>

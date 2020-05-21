@@ -12,7 +12,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="licentaApp.aplicareLicenta.rezolvata" for="field_rezolvata">Rezolvata</label>
+                    <label class="form-control-label" jhiTranslate="licentaApp.aplicareLicenta.rezolvata"  for="field_rezolvata">Rezolvata</label>
                     <input type="checkbox" class="form-control" name="rezolvata" id="field_rezolvata"
                            formControlName="rezolvata"/>
                 </div>
@@ -27,7 +27,7 @@
                     <label class="form-control-label" jhiTranslate="licentaApp.aplicareLicenta.student" for="field_student">Student</label>
                     <select class="form-control" id="field_student" name="student" formControlName="student">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="studentInfoOption.id === editForm.get('student')!.value?.id ? editForm.get('student')!.value : studentInfoOption" *ngFor="let studentInfoOption of studentinfos; trackBy: trackById">{{ studentInfoOption.id }}</option>
+                        <option [ngValue]="studentInfoOption.id === editForm.get('student')!.value?.id ? editForm.get('student')!.value : studentInfoOption" *ngFor="let studentInfoOption of studentinfos; trackBy: trackById">{{ studentInfoOption.user.lastName }} {{ studentInfoOption.user.firstName }}</option>
                     </select>
                 </div>
 

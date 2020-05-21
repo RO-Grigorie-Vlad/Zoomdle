@@ -1,31 +1,34 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="aplicareLicenta">
-            <h2><span jhiTranslate="licentaApp.aplicareLicenta.detail.title">Aplicare Licenta</span> {{ aplicareLicenta.id }}</h2>
+            <h2><span jhiTranslate="licentaApp.aplicareLicenta.detail.title">Aplicare Licenta</span> <span *jhiHasAnyAuthority="['ROLE_ADMIN']">{{ aplicareLicenta?.id }}</span></h2>
 
             <hr>
 
             <jhi-alert-error></jhi-alert-error>
 
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="licentaApp.aplicareLicenta.rezolvata">Rezolvata</span></dt>
-                <dd>
-                    <span>{{ aplicareLicenta.rezolvata }}</span>
+                <dt *ngIf="!aplicareLicenta?.rezolvata" ><span jhiTranslate="licentaApp.aplicareLicenta.rezolvata">Rezolvata</span></dt>
+                <dd *ngIf="!aplicareLicenta?.rezolvata">
+                    <!--<span>{{ aplicareLicenta.rezolvata }}</span>-->
+                    <span>Nu</span>
                 </dd>
-                <dt><span jhiTranslate="licentaApp.aplicareLicenta.acceptata">Acceptata</span></dt>
-                <dd>
-                    <span>{{ aplicareLicenta.acceptata }}</span>
+                <dt *ngIf="aplicareLicenta?.rezolvata"><span jhiTranslate="licentaApp.aplicareLicenta.acceptata">Acceptata</span></dt>
+                <dd *ngIf="aplicareLicenta?.rezolvata">
+                    <!--<span>{{ aplicareLicenta.acceptata }}</span>-->
+                    <span *ngIf="aplicareLicenta?.acceptata">Da</span>
+                    <span *ngIf="!aplicareLicenta?.acceptata">Nu</span>
                 </dd>
                 <dt><span jhiTranslate="licentaApp.aplicareLicenta.student">Student</span></dt>
                 <dd>
-                    <div *ngIf="aplicareLicenta.student">
-                        <a [routerLink]="['/student-info', aplicareLicenta.student?.id, 'view']">{{ aplicareLicenta.student?.id }}</a>
+                    <div *ngIf="aplicareLicenta?.student">
+                        <a [routerLink]="['/student-info', aplicareLicenta?.student?.id, 'view']">{{ aplicareLicenta?.student?.user?.lastName }} {{ aplicareLicenta?.student?.user?.firstName }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="licentaApp.aplicareLicenta.licenta">Licenta</span></dt>
                 <dd>
-                    <div *ngIf="aplicareLicenta.licenta">
-                        <a [routerLink]="['/licenta', aplicareLicenta.licenta?.id, 'view']">{{ aplicareLicenta.licenta?.denumire }}</a>
+                    <div *ngIf="aplicareLicenta?.licenta">
+                        <a [routerLink]="['/licenta', aplicareLicenta?.licenta?.id, 'view']">{{ aplicareLicenta?.licenta?.denumire }}</a>
                     </div>
                 </dd>
             </dl>
@@ -36,8 +39,8 @@
                 <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
-            <button type="button"
-                    [routerLink]="['/aplicare-licenta', aplicareLicenta.id, 'edit']"
+            <button type="button" *jhiHasAnyAuthority="['ROLE_ADMIN']" 
+                    [routerLink]="['/aplicare-licenta', aplicareLicenta?.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>

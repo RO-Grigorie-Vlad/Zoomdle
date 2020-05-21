@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IAplicareLicenta } from 'app/shared/model/aplicare-licenta.model';
@@ -10,6 +10,11 @@ import { IAplicareLicenta } from 'app/shared/model/aplicare-licenta.model';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { AplicareLicentaService } from './aplicare-licenta.service';
 import { AplicareLicentaDeleteDialogComponent } from './aplicare-licenta-delete-dialog.component';
+import { AccountService } from 'app/core/auth/account.service';
+import { IUser } from 'app/core/user/user.model';
+import { UserService } from 'app/core/user/user.service';
+
+import { Account } from 'app/core/user/account.model';
 
 @Component({
   selector: 'jhi-aplicare-licenta',
@@ -25,16 +30,32 @@ export class AplicareLicentaComponent implements OnInit, OnDestroy {
   ascending!: boolean;
   ngbPaginationPage = 1;
 
+  currentUser!: Account | null;
+  currentUserLogin!: string;
+  user!: IUser;
+
   constructor(
     protected aplicareLicentaService: AplicareLicentaService,
+    protected accountService: AccountService,
+    private userService: UserService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected alertService: JhiAlertService
   ) {}
 
   loadPage(page?: number): void {
     const pageToLoad: number = page || this.page;
+
+    this.accountService.getAuthenticationState().subscribe(account => {
+      if (account) {
+        this.currentUser = account;
+        // this.userService.find(account.login).subscribe(
+        // user => (this.user = user) );
+      }
+      account == null ? (this.currentUserLogin = '') : (this.currentUserLogin = account.login);
+    });
 
     this.aplicareLicentaService
       .query({
@@ -62,6 +83,37 @@ export class AplicareLicentaComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.eventSubscriber) {
       this.eventManager.destroy(this.eventSubscriber);
+    }
+  }
+
+  raspundeLaAplicatie(aplicareLicentaID: number, raspuns: boolean): void {
+    this.aplicareLicentaService.raspunde(aplicareLicentaID, raspuns).subscribe(() => this.loadPage());
+    if (raspuns === true) {
+      this.alertService.get().push(
+        this.alertService.addAlert(
+          {
+            type: 'success',
+            msg: 'licentaApp.aplicareConsultatie.accepta',
+            timeout: 3000,
+            toast: false,
+            scoped: true
+          },
+          this.alertService.get()
+        )
+      );
+    } else {
+      this.alertService.get().push(
+        this.alertService.addAlert(
+          {
+            type: 'danger',
+            msg: 'licentaApp.aplicareConsultatie.respinge',
+            timeout: 3000,
+            toast: false,
+            scoped: true
+          },
+          this.alertService.get()
+        )
+      );
     }
   }
 

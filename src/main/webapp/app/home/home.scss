@@ -4,9 +4,17 @@ Main page styles
 
 .hipster {
   display: inline-block;
-  width: 347px;
-  height: 497px;
-  background: url('../../content/images/jhipster_family_member_0.svg') no-repeat center top;
+  width: 600px;
+  height: 396px;
+  background: url('../../content/images/logo2.svg') no-repeat center center;
+  background-size: contain;
+}
+
+.logo {
+  display: inline-block;
+  width: 600px;
+  height: 396px;
+  background: url('../../content/images/logo2.svg') no-repeat center center;
   background-size: contain;
 }
 
@@ -17,7 +25,19 @@ Main page styles
   only screen and (min-resolution: 192dpi),
   only screen and (min-resolution: 2dppx) {
   .hipster {
-    background: url('../../content/images/jhipster_family_member_0.svg') no-repeat center top;
+    background: url('../../content/images/logo2.svg') no-repeat center center;
     background-size: contain;
+  }
+  .logo {
+    background: url('../../content/images/logo2.svg') no-repeat center center;
+    background-size: contain;
+  }
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column.side,
+  .column.middle {
+    width: 100%;
   }
 }

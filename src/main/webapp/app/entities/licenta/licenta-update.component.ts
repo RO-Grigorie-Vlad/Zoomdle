@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -38,6 +38,7 @@ export class LicentaUpdateComponent implements OnInit {
     protected studentInfoService: StudentInfoService,
     protected profesorInfoService: ProfesorInfoService,
     protected activatedRoute: ActivatedRoute,
+    protected router: Router,
     private fb: FormBuilder
   ) {}
 
@@ -89,6 +90,11 @@ export class LicentaUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const licenta = this.createFromForm();
+    if (licenta.studentInfo === null) {
+      licenta.atribuita = false;
+    } else {
+      licenta.atribuita = true;
+    }
     if (licenta.id !== undefined) {
       this.subscribeToSaveResponse(this.licentaService.update(licenta));
     } else {

@@ -2,24 +2,25 @@
   "licentaApp": {
     "licenta": {
       "home": {
-        "title": "Licentas",
-        "createLabel": "Creeare o nouă entitate Licenta",
+        "title": "Licente",
+        "createLabel": "Creeare o nouă Licenta",
         "createOrEditLabel": "Creeare sau editare Licenta",
-        "notFound": "No Licentas found"
+        "notFound": "Nu s-a gasit nici o Licenta"
       },
-      "created": "A fost creată o nouă entitate Licenta cu identificatorul {{ param }}",
-      "updated": "Licenta cu identificatorul {{ param }} a fost actualizată",
-      "deleted": "Licenta cu identificatorul {{ param }} a fost ștearsă",
+      "created": "A fost creată o nouă Licenta",
+      "updated": "Licenta a fost actualizată",
+      "deleted": "Licenta  a fost ștearsă",
       "delete": {
-        "question": "Sunteți sigur că doriți să ștergeți Licenta {{ id }}?"
+        "question": "Sunteți sigur că doriți să ștergeți aceasta Licenta?"
       },
       "detail": {
         "title": "Licenta"
       },
+      "aplica": "Succes : aplicare la licenta efectuata",
       "denumire": "Denumire",
       "descriere": "Descriere",
       "atribuita": "Atribuita",
-      "studentInfo": "Student Info",
+      "studentInfo": "Student",
       "aplicareLicenta": "Aplicare Licenta",
       "profesor": "Profesor"
     }
