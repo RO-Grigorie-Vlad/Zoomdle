@@ -10,7 +10,6 @@ import base.domain.StudentInfo;
 import base.domain.User;
 import base.repository.UserRepository;
 import base.security.AuthoritiesConstants;
-import base.security.SecurityUtils;
 import base.service.AplicareConsultatieService;
 import base.service.AplicareLicentaService;
 import base.service.ConsultatieService;
@@ -171,6 +170,7 @@ public class UserResource {
         return ResponseUtil.wrapOrNotFound(updatedUser,
             HeaderUtil.createAlert(applicationName, "userManagement.updated", userDTO.getLogin()));
     }
+
 
     /**
      * {@code GET /users} : get all users.

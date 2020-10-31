@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
 import { IConsultatie } from 'app/shared/model/consultatie.model';
-import { LicentaDTO } from 'app/shared/model/licenta-dto';
+import { AplicareDTO } from 'app/shared/model/aplicare-dto';
 
 type EntityResponseType = HttpResponse<IConsultatie>;
 type EntityArrayResponseType = HttpResponse<IConsultatie[]>;
@@ -51,8 +51,8 @@ export class ConsultatieService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  public aplica(dataToSend: LicentaDTO): Observable<HttpResponse<LicentaDTO>> {
-    return this.http.post<LicentaDTO>(this.aplicaResourceUrl, dataToSend, { observe: 'response' });
+  public aplica(dataToSend: AplicareDTO): Observable<HttpResponse<AplicareDTO>> {
+    return this.http.post<AplicareDTO>(this.aplicaResourceUrl, dataToSend, { observe: 'response' });
   }
 
   verificaAplicari(): Observable<number[]> {

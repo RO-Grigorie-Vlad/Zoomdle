@@ -86,8 +86,8 @@ export class AplicareLicentaComponent implements OnInit, OnDestroy {
     }
   }
 
-  raspundeLaAplicatie(aplicareLicentaID: number, raspuns: boolean): void {
-    this.aplicareLicentaService.raspunde(aplicareLicentaID, raspuns).subscribe(() => this.loadPage());
+  raspundeLaAplicatie(aplicareID: number, raspuns: boolean): void {
+    this.aplicareLicentaService.raspunde(aplicareID, raspuns).subscribe(() => this.loadPage());
     if (raspuns === true) {
       this.alertService.get().push(
         this.alertService.addAlert(

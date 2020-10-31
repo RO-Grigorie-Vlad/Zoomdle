@@ -3,9 +3,9 @@
     "aplicareConsultatie": {
       "home": {
         "title": "Aplicare Consultaties",
-        "createLabel": "Creeare o nouă Aplicare Consultatie",
-        "createOrEditLabel": "Creeare sau editare Aplicare Consultatie",
-        "notFound": "No Aplicare Consultaties found"
+        "createLabel": "Creare o nouă Aplicare Consultatie",
+        "createOrEditLabel": "Creare sau editare Aplicare Consultatie",
+        "notFound": "Nu s-a gasit nici o aplicare la consultatii"
       },
       "created": "A fost creată o nouă Aplicare Consultatie",
       "updated": "Aplicare Consultatie a fost actualizată",

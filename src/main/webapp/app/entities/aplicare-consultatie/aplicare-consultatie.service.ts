@@ -37,8 +37,7 @@ export class AplicareConsultatieService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  raspunde(aplicareLicentaID: number, raspuns: boolean): Observable<EntityResponseType> {
-    // am denumit aplicareLicentaID pentru se potrivi cu campul aplicareLicentaID din clasa RaspunsAplicatie de pe BackEnd
-    return this.http.post<IAplicareConsultatie>(this.raspundeLaAplicatieUrl, { aplicareLicentaID, raspuns }, { observe: 'response' });
+  raspunde(aplicareID: number, raspuns: boolean): Observable<EntityResponseType> {
+    return this.http.post<IAplicareConsultatie>(this.raspundeLaAplicatieUrl, { aplicareID, raspuns }, { observe: 'response' });
   }
 }

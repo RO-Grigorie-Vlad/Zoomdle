@@ -35,7 +35,7 @@ import java.util.Optional;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import base.service.dto.LicentaDTO;
+import base.service.dto.AplicareDTO;
 /**
  * REST controller for managing {@link base.domain.Licenta}.
  */
@@ -111,16 +111,15 @@ public class LicentaResource {
             .body(result);
     }
 
-    // NEW NEW :
 
     @PostMapping("/licenta/aplica")
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @Transactional
-    public void aplicaLaLicenta(@Valid @RequestBody LicentaDTO aplicare) {
+    public void aplicaLaLicenta(@Valid @RequestBody AplicareDTO aplicare) {
 
-        log.debug("Got a LicentaDTO from the frontend: CurrentUser = " + aplicare.getCurrentUserLogin() + " aplica la licenta cu id-ul: " + aplicare.getLicentaID());
+        log.debug("Got a AplicareDTO from the frontend: CurrentUser = " + aplicare.getCurrentUserLogin() + " aplica la licenta cu id-ul: " + aplicare.getIdLicentaOrConsulatie());
 
-        Optional<Licenta> result = this.licentaService.findOne((long) aplicare.getLicentaID());
+        Optional<Licenta> result = this.licentaService.findOne((long) aplicare.getIdLicentaOrConsulatie());
         Optional<User> user =  this.userService.findOneByLogin(aplicare.getCurrentUserLogin());
         Optional<StudentInfo> student = null;
 

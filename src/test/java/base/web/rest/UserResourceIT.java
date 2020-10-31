@@ -2,9 +2,14 @@ package base.web.rest;
 
 import base.LicentaApp;
 import base.domain.Authority;
+import base.domain.StudentInfo;
+import base.domain.ProfesorInfo;
 import base.domain.User;
+import base.repository.ProfesorInfoRepository;
+import base.repository.StudentInfoRepository;
 import base.repository.UserRepository;
 import base.security.AuthoritiesConstants;
+import base.service.dto.AplicareDTO;
 import base.service.dto.UserDTO;
 import base.service.mapper.UserMapper;
 import base.web.rest.vm.ManagedUserVM;
@@ -27,6 +32,7 @@ import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItems;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -65,8 +71,11 @@ public class UserResourceIT {
     @Autowired
     private UserRepository userRepository;
     
-    //@Autowired
-    //private StudentInfoService studentInfoService;
+    @Autowired
+    private StudentInfoRepository studentInfoRepository;
+
+    @Autowired
+    private ProfesorInfoRepository profesortInfoRepository;
 
     @Autowired
     private UserMapper userMapper;
@@ -81,6 +90,7 @@ public class UserResourceIT {
     private MockMvc restUserMockMvc;
 
     private User user;
+    
 
     @BeforeEach
     public void setup() {
@@ -114,6 +124,7 @@ public class UserResourceIT {
         user.setEmail(DEFAULT_EMAIL);
     }
 
+
     @Test
     @Transactional
     public void createUser() throws Exception {
@@ -140,6 +151,7 @@ public class UserResourceIT {
         assertPersistedUsers(users -> {
             assertThat(users).hasSize(databaseSizeBeforeCreate + 1);
             User testUser = users.get(users.size() - 1);
+            
             assertThat(testUser.getLogin()).isEqualTo(DEFAULT_LOGIN);
             assertThat(testUser.getFirstName()).isEqualTo(DEFAULT_FIRSTNAME);
             assertThat(testUser.getLastName()).isEqualTo(DEFAULT_LASTNAME);
@@ -147,6 +159,109 @@ public class UserResourceIT {
             assertThat(testUser.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
             assertThat(testUser.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
         });
+    }
+
+    @Test
+    @Transactional
+    public void createStudent() throws Exception {
+        int databaseSizeBeforeCreate = userRepository.findAll().size();
+        int studentDatabaseSizeBeforeCreate = studentInfoRepository.findAll().size();
+        // Create the User
+        ManagedUserVM managedUserVM = new ManagedUserVM();
+        managedUserVM.setLogin(DEFAULT_LOGIN);
+        managedUserVM.setPassword(DEFAULT_PASSWORD);
+        managedUserVM.setFirstName(DEFAULT_FIRSTNAME);
+        managedUserVM.setLastName(DEFAULT_LASTNAME);
+        managedUserVM.setEmail(DEFAULT_EMAIL);
+        managedUserVM.setActivated(true);
+        managedUserVM.setImageUrl(DEFAULT_IMAGEURL);
+        managedUserVM.setLangKey(DEFAULT_LANGKEY);
+        
+        Set<String> authorities =  new HashSet<String>();
+        authorities.add(AuthoritiesConstants.STUDENT);
+        managedUserVM.setAuthorities(authorities);
+
+        restUserMockMvc.perform(post("/api/users")
+            .contentType(TestUtil.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
+            .andExpect(status().isCreated());
+
+        // Validate the User in the database
+        assertPersistedUsers(users -> {
+            assertThat(users).hasSize(databaseSizeBeforeCreate + 1);
+            User testUser = users.get(users.size() - 1);
+            
+            assertThat(testUser.getLogin()).isEqualTo(DEFAULT_LOGIN);
+            assertThat(testUser.getFirstName()).isEqualTo(DEFAULT_FIRSTNAME);
+            assertThat(testUser.getLastName()).isEqualTo(DEFAULT_LASTNAME);
+            assertThat(testUser.getEmail()).isEqualTo(DEFAULT_EMAIL);
+            assertThat(testUser.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
+            assertThat(testUser.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
+
+            List<StudentInfo> studentInfoList = studentInfoRepository.findAll();
+            assertThat(studentInfoList).hasSize(studentDatabaseSizeBeforeCreate + 1);
+
+            // Check that a StudentInfo was created in the database, asociated with the new User
+            Optional <StudentInfo> optionalStudent = studentInfoRepository.findOneByUser(testUser);
+            //assertThat(optionalStudent.isPresent());
+            assertEquals(optionalStudent.isPresent(),true);
+            if(optionalStudent.isPresent()){
+                System.out.println("StudentInfo is present!");
+                assertThat(optionalStudent.get().getUser().getLogin().equals(testUser.getLogin()));
+            }
+        });
+
+    }
+
+    @Test
+    @Transactional
+    public void createProfesor() throws Exception {
+        int databaseSizeBeforeCreate = userRepository.findAll().size();
+
+        // Create the User
+        ManagedUserVM managedUserVM = new ManagedUserVM();
+        managedUserVM.setLogin(DEFAULT_LOGIN);
+        managedUserVM.setPassword(DEFAULT_PASSWORD);
+        managedUserVM.setFirstName(DEFAULT_FIRSTNAME);
+        managedUserVM.setLastName(DEFAULT_LASTNAME);
+        managedUserVM.setEmail(DEFAULT_EMAIL);
+        managedUserVM.setActivated(true);
+        managedUserVM.setImageUrl(DEFAULT_IMAGEURL);
+        managedUserVM.setLangKey(DEFAULT_LANGKEY);
+        
+        Set<String> authorities =  new HashSet<String>();
+        authorities.add(AuthoritiesConstants.PROFESOR);
+        managedUserVM.setAuthorities(authorities);
+
+        restUserMockMvc.perform(post("/api/users")
+            .contentType(TestUtil.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(managedUserVM)))
+            .andExpect(status().isCreated());
+
+        // Validate the User in the database
+        assertPersistedUsers(users -> {
+            assertThat(users).hasSize(databaseSizeBeforeCreate + 1);
+            User testUser = users.get(users.size() - 1);
+            
+            assertThat(testUser.getLogin()).isEqualTo(DEFAULT_LOGIN);
+            assertThat(testUser.getFirstName()).isEqualTo(DEFAULT_FIRSTNAME);
+            assertThat(testUser.getLastName()).isEqualTo(DEFAULT_LASTNAME);
+            assertThat(testUser.getEmail()).isEqualTo(DEFAULT_EMAIL);
+            assertThat(testUser.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
+            assertThat(testUser.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
+        
+        // Check that a ProfesorInfo was created in the database, asociated with the new User
+            Optional <ProfesorInfo> optionalProfesor = profesortInfoRepository.findOneByUser(testUser);
+            //assertThat(optionalProfesor.isPresent());
+            assertEquals(optionalProfesor.isPresent(),true);
+            if(optionalProfesor.isPresent()){
+                System.out.println("ProfesorInfo is present!");
+                assertThat(optionalProfesor.get().getUser().getLogin().equals(testUser.getLogin()));
+                
+            }
+            
+        });
+          
     }
 
     @Test

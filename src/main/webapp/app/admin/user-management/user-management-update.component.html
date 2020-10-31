@@ -122,9 +122,7 @@
                     <label jhiTranslate="userManagement.profiles">Profiles</label>
                     <select class="form-control" multiple name="authority" formControlName="authorities">
                         <option *ngFor="let authority of authorities" [value]="authority">
-                            <div *ngIf="authority !== 'ROLE_USER'">
                             {{ authority }}
-                            </div>
                         </option>
                     </select>
                 </div>

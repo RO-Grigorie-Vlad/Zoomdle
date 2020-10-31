@@ -13,7 +13,7 @@ import { LicentaDeleteDialogComponent } from './licenta-delete-dialog.component'
 
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
-import { LicentaDTO } from 'app/shared/model/licenta-dto';
+import { AplicareDTO } from 'app/shared/model/aplicare-dto';
 
 @Component({
   selector: 'jhi-licenta',
@@ -31,9 +31,9 @@ export class LicentaComponent implements OnInit, OnDestroy {
 
   currentUser!: Account | null;
   currentUserLogin!: string;
-  licentaID!: number;
+  idLicentaOrConsulatie!: number;
   succes!: string;
-  dataToSend2!: LicentaDTO;
+  dataToSend2!: AplicareDTO;
 
   isStudent!: Boolean;
   isProfesor!: Boolean;
@@ -86,17 +86,17 @@ export class LicentaComponent implements OnInit, OnDestroy {
       );
   }
 
-  /** goToEdit(profesorOfThisLicenta: number, licentaID: number): void {
+  /** goToEdit(profesorOfThisLicenta: number, idLicentaOrConsulatie: number): void {
      if(this.isProfesor){
        if(this.curentProfesorID === profesorOfThisLicenta){
-        this.router.navigate(['/licenta/' + licentaID +'/edit'], { queryParams: { page: licentaID } });
+        this.router.navigate(['/licenta/' + idLicentaOrConsulatie +'/edit'], { queryParams: { page: idLicentaOrConsulatie } });
        }
        else{
         this.router.navigate(['/accessdenied/']);
        }
      }
      else if(this.isAdmin){
-        this.router.navigate(['/licenta/' + licentaID +'/edit'], { queryParams: { page: licentaID } });
+        this.router.navigate(['/licenta/' + idLicentaOrConsulatie +'/edit'], { queryParams: { page: idLicentaOrConsulatie } });
      }
      else{
       this.router.navigate(['/accessdenied/']);
@@ -150,8 +150,8 @@ export class LicentaComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.licenta = licenta;
   }
 
-  aplicaLaLicenta(licentaID2: number): void {
-    this.dataToSend2 = new LicentaDTO(this.currentUserLogin, licentaID2);
+  aplicaLaLicenta(idLicentaOrConsulatie2: number): void {
+    this.dataToSend2 = new AplicareDTO(this.currentUserLogin, idLicentaOrConsulatie2);
     this.licentaService.aplica(this.dataToSend2).subscribe(() => this.loadPage());
     this.alertService.get().push(
       this.alertService.addAlert(

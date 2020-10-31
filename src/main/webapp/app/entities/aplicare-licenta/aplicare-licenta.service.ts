@@ -37,7 +37,7 @@ export class AplicareLicentaService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  raspunde(aplicareLicentaID: number, raspuns: boolean): Observable<EntityResponseType> {
-    return this.http.post<IAplicareLicenta>(this.customResourceURL, { aplicareLicentaID, raspuns }, { observe: 'response' });
+  raspunde(aplicareID: number, raspuns: boolean): Observable<EntityResponseType> {
+    return this.http.post<IAplicareLicenta>(this.customResourceURL, { aplicareID, raspuns }, { observe: 'response' });
   }
 }

@@ -122,7 +122,7 @@ public class ProfesorInfoResourceIT {
         // Validate the ProfesorInfo in the database
         List<ProfesorInfo> profesorInfoList = profesorInfoRepository.findAll();
         assertThat(profesorInfoList).hasSize(databaseSizeBeforeCreate + 1);
-        ProfesorInfo testProfesorInfo = profesorInfoList.get(profesorInfoList.size() - 1);
+        //ProfesorInfo testProfesorInfo = profesorInfoList.get(profesorInfoList.size() - 1);
     }
 
     @Test
@@ -200,7 +200,7 @@ public class ProfesorInfoResourceIT {
         // Validate the ProfesorInfo in the database
         List<ProfesorInfo> profesorInfoList = profesorInfoRepository.findAll();
         assertThat(profesorInfoList).hasSize(databaseSizeBeforeUpdate);
-        ProfesorInfo testProfesorInfo = profesorInfoList.get(profesorInfoList.size() - 1);
+        //ProfesorInfo testProfesorInfo = profesorInfoList.get(profesorInfoList.size() - 1);
     }
 
     @Test

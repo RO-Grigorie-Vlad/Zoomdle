@@ -3,8 +3,8 @@
     "consultatie": {
       "home": {
         "title": "Consultaties",
-        "createLabel": "Creeare o nouă Consultatie",
-        "createOrEditLabel": "Creeare sau editare Consultatie",
+        "createLabel": "Creare o nouă Consultatie",
+        "createOrEditLabel": "Creare sau editare Consultatie",
         "notFound": "Nu s-a gasit nici o Consultatie"
       },
       "created": "A fost creată o nouă Consultatie",

@@ -100,7 +100,7 @@ public class AplicareLicentaResource {
     @PreAuthorize("hasRole('ROLE_PROFESOR')")
     public void raspundeLaAplicatie(@RequestBody RaspunsAplicatie pair) throws URISyntaxException {
         log.debug("REST request to RESPOND to a AplicareLicenta");
-        Long aplicatieLicentaID = (long) pair.getAplicareLicentaID();
+        Long aplicatieLicentaID = (long) pair.getAplicareID();
         Boolean raspuns = pair.getRaspuns();
         log.debug("Raspunsul este : " + raspuns);
 

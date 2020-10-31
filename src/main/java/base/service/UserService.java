@@ -4,8 +4,6 @@ import base.config.Constants;
 import base.domain.Authority;
 import base.domain.User;
 import base.repository.AuthorityRepository;
-import base.repository.ProfesorInfoRepository;
-import base.repository.StudentInfoRepository;
 import base.repository.UserRepository;
 import base.security.AuthoritiesConstants;
 import base.security.SecurityUtils;
@@ -48,24 +46,18 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    private final ProfesorInfoRepository profesorInfoRepository;
-
-    private final StudentInfoRepository studentInfoRepository;
-
     private final UserMapper userMapper;
 
     private final StudentInfoService studentInfoService;
 
     private final ProfesorInfoService profesorInfoService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager, StudentInfoRepository studentInfoRepository,StudentInfoService studentInfoService, ProfesorInfoRepository profesorInfoRepository,ProfesorInfoService profesorInfoService, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager, StudentInfoService studentInfoService, ProfesorInfoService profesorInfoService, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
-        this.profesorInfoRepository = profesorInfoRepository;
         this.userMapper = userMapper;
-        this.studentInfoRepository = studentInfoRepository;
         this.studentInfoService = studentInfoService;
         this.profesorInfoService = profesorInfoService;
     }

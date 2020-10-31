@@ -3,8 +3,8 @@
     "aplicareLicenta": {
       "home": {
         "title": "Aplicari Licente",
-        "createLabel": "Creeare o nouă Aplicare Licenta",
-        "createOrEditLabel": "Creeare sau editare Aplicare Licenta",
+        "createLabel": "Creare o nouă Aplicare Licenta",
+        "createOrEditLabel": "Creare sau editare Aplicare Licenta",
         "notFound": "Nu s-a gasit nici o aplicare la licente"
       },
       "created": "A fost creată o Aplicare Licenta",

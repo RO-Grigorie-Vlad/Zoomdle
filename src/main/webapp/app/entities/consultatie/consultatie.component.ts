@@ -10,7 +10,7 @@ import { IConsultatie } from 'app/shared/model/consultatie.model';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { ConsultatieService } from './consultatie.service';
 import { ConsultatieDeleteDialogComponent } from './consultatie-delete-dialog.component';
-import { LicentaDTO } from 'app/shared/model/licenta-dto';
+import { AplicareDTO } from 'app/shared/model/aplicare-dto';
 import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
@@ -29,9 +29,9 @@ export class ConsultatieComponent implements OnInit, OnDestroy {
 
   currentUser!: Account | null;
   currentUserLogin!: string;
-  licentaID!: number;
+  idLicentaOrConsulatie!: number;
   succes!: string;
-  dataToSend2!: LicentaDTO;
+  dataToSend2!: AplicareDTO;
 
   isStudent!: Boolean;
   isProfesor!: Boolean;
@@ -96,7 +96,7 @@ export class ConsultatieComponent implements OnInit, OnDestroy {
   }
 
   aplica(consultatieID: number): void {
-    this.dataToSend2 = new LicentaDTO(this.currentUserLogin, consultatieID);
+    this.dataToSend2 = new AplicareDTO(this.currentUserLogin, consultatieID);
 
     this.consultatieService.aplica(this.dataToSend2).subscribe(() => this.loadPage());
     // alerta de success
@@ -113,7 +113,7 @@ export class ConsultatieComponent implements OnInit, OnDestroy {
       )
     );
     // window.location.reload();
-    // this.licentaService.aplica2(this.currentUserLogin,licentaID2);
+    // this.licentaService.aplica2(this.currentUserLogin,idLicentaOrConsulatie2);
   }
 
   checkIncludes(consultatieID: number): Boolean {

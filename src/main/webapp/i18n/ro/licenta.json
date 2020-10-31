@@ -3,8 +3,8 @@
     "licenta": {
       "home": {
         "title": "Licente",
-        "createLabel": "Creeare o nouă Licenta",
-        "createOrEditLabel": "Creeare sau editare Licenta",
+        "createLabel": "Creare o nouă Licenta",
+        "createOrEditLabel": "Creare sau editare Licenta",
         "notFound": "Nu s-a gasit nici o Licenta"
       },
       "created": "A fost creată o nouă Licenta",

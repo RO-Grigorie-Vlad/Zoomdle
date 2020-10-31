@@ -3,8 +3,8 @@
     "profesorInfo": {
       "home": {
         "title": "Profesor Infos",
-        "createLabel": "Creeare o nouă entitate Profesor Info",
-        "createOrEditLabel": "Creeare sau editare Profesor Info",
+        "createLabel": "Creare o nouă entitate Profesor Info",
+        "createOrEditLabel": "Creare sau editare Profesor Info",
         "notFound": "No Profesor Infos found"
       },
       "created": "A fost creată o nouă entitate Profesor Info cu identificatorul {{ param }}",

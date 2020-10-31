@@ -19,7 +19,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ConsultatieRepository extends JpaRepository<Consultatie, Long> {
 
-
     @Query("SELECT c FROM Consultatie c")
     List<Consultatie> findAll2();
 
@@ -27,8 +26,6 @@ public interface ConsultatieRepository extends JpaRepository<Consultatie, Long> 
 
     @Query("SELECT c FROM Consultatie c WHERE c.profesor.id = :id")
     Page<Consultatie> findAllByProfesorPage(@Param("id") Long id, Pageable pagable);
-
-    
 
     List<Consultatie> findAllByStudent(StudentInfo student);
 }

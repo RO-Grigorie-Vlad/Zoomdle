@@ -1,15 +1,21 @@
 package base.web.rest;
 
 import base.LicentaApp;
+import base.domain.Authority;
 import base.domain.Licenta;
+import base.domain.User;
 import base.repository.LicentaRepository;
+import base.security.AuthoritiesConstants;
 import base.service.AplicareLicentaService;
 import base.service.LicentaService;
 import base.service.ProfesorInfoService;
 import base.service.StudentInfoService;
 import base.service.UserService;
+import base.service.dto.AplicareDTO;
+import base.service.dto.UserDTO;
 import base.web.rest.errors.ExceptionTranslator;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -24,7 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static base.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,6 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Integration tests for the {@link LicentaResource} REST controller.
  */
+
 @SpringBootTest(classes = LicentaApp.class)
 public class LicentaResourceIT {
 

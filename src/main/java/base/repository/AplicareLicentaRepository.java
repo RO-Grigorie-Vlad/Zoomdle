@@ -19,7 +19,9 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface AplicareLicentaRepository extends JpaRepository<AplicareLicenta, Long> {
+
     List<AplicareLicenta> findAllByLicenta(Licenta licenta);
+    
     Page<AplicareLicenta> findAllByStudent(StudentInfo student, Pageable pageable);
     
     @Query("SELECT s FROM AplicareLicenta s WHERE s.student.id = :id")

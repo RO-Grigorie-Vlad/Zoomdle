@@ -23,11 +23,6 @@ import java.util.Optional;
 @Repository
 public interface StudentInfoRepository extends JpaRepository<StudentInfo, Long> {
 
-    /**Gaseste toti studentii coorodnati de un profesor by profesorID
-     * 2 variante : una cu @Query, celalta folosind metoda findAllByProfesor (comes by default)
-     * 
-     * 
-     */
     @Query("SELECT s FROM StudentInfo s WHERE s.profesor.id = :id")
     Page<StudentInfo> findAllByProfesorID(@Param("id") Long id, Pageable pageable);
 

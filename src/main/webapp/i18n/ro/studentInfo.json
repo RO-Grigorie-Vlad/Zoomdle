@@ -3,8 +3,8 @@
     "studentInfo": {
       "home": {
         "title": "Student Infos",
-        "createLabel": "Creeare o nouă entitate Student Info",
-        "createOrEditLabel": "Creeare sau editare Student Info",
+        "createLabel": "Creare o nouă entitate Student Info",
+        "createOrEditLabel": "Creare sau editare Student Info",
         "notFound": "No Student Infos found"
       },
       "created": "A fost creată o nouă entitate Student Info cu identificatorul {{ param }}",

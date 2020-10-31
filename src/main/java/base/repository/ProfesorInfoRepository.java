@@ -16,5 +16,5 @@ import org.springframework.stereotype.Repository;
 public interface ProfesorInfoRepository extends JpaRepository<ProfesorInfo, Long> {
 
     Optional<ProfesorInfo> findOneByUser(User user);
-
+    
 }

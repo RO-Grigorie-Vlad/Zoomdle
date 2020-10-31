@@ -14,7 +14,7 @@ import base.service.LicentaService;
 import base.service.ProfesorInfoService;
 import base.service.StudentInfoService;
 import base.service.UserService;
-import base.service.dto.LicentaDTO;
+import base.service.dto.AplicareDTO;
 import base.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -170,9 +170,9 @@ public class ConsultatieResource {
     @PostMapping("/consultatie/aplica")
     @PreAuthorize("hasRole('ROLE_STUDENT')")
     @Transactional
-    public void aplicaLaConsultatie(@Valid @RequestBody LicentaDTO aplicare) {
+    public void aplicaLaConsultatie(@Valid @RequestBody AplicareDTO aplicare) {
 
-        Optional<Consultatie> result = this.consultatieService.findOne((long) aplicare.getLicentaID());
+        Optional<Consultatie> result = this.consultatieService.findOne((long) aplicare.getIdLicentaOrConsulatie());
         Optional<User> user =  this.userService.findOneByLogin(aplicare.getCurrentUserLogin());
         Optional<StudentInfo> student = null;
 

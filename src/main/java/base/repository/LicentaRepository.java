@@ -20,12 +20,6 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface LicentaRepository extends JpaRepository<Licenta, Long> {
 
-    
-    /**Gaseste toate licentele de un profesor by profesorID
-     * 2 variante : una cu @Query, celalta folosind metoda findAllByProfesor (comes by default)
-     * 
-     * 
-     */
     @Query("SELECT s FROM Licenta s WHERE s.profesor.id = :id")
     Page<Licenta> findAllByProfesorID(@Param("id") Long id, Pageable pageable);
 
