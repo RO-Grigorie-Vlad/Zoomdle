@@ -1,5 +1,11 @@
 # Licenta
 
+## Short description
+
+This is my bachelor's degree thesis.
+
+It is a web platform for the management of bachelor’s graduation theses, where students and teachers can efficiently plan and organize the development of the projects. It was created using JHipster (Spring Boot & Angular), Hibernate, with PostgreSQL for production and H2 for development.
+
 This application was generated using JHipster 6.7.1, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.7.1](https://www.jhipster.tech/documentation-archive/v6.7.1).
 
 ## Development
